@@ -1,6 +1,7 @@
 // About.tsx
 import React from "react";
 import "./About.css";
+import { Bot, Palette, Cloud } from 'lucide-react';
 
 const About = () => {
   return (
@@ -78,26 +79,25 @@ const About = () => {
           {/* Full-width card */}
           <div className="full-width-card">
             <h3 className="full-card-title">What We Build</h3>
-
             <div className="build-items">
-              <div className="build-item">
-                <div className="emoji">🤖</div>
-                <h4>AI-Native Platforms</h4>
-                <p>Machine learning, LLM integration, intelligent automation</p>
-              </div>
+  <div className="build-item">
+    <Bot className="build-icon" size={32} strokeWidth={1.8} />
+    <h4>AI-Native Platforms</h4>
+    <p>Machine learning, LLM integration, intelligent automation</p>
+  </div>
 
-              <div className="build-item">
-                <div className="emoji">🎨</div>
-                <h4>Immersive Experiences</h4>
-                <p>3D web, real-time interactions, stunning interfaces</p>
-              </div>
+  <div className="build-item">
+    <Palette className="build-icon" size={32} strokeWidth={1.8} />
+    <h4>Immersive Experiences</h4>
+    <p>3D web, real-time interactions, stunning interfaces</p>
+  </div>
 
-              <div className="build-item">
-                <div className="emoji">☁️</div>
-                <h4>Enterprise Cloud</h4>
-                <p>Scalable infrastructure, microservices, DevOps excellence</p>
-              </div>
-            </div>
+  <div className="build-item">
+    <Cloud className="build-icon" size={32} strokeWidth={1.8} />
+    <h4>Enterprise Cloud</h4>
+    <p>Scalable infrastructure, microservices, DevOps excellence</p>
+  </div>
+</div>
           </div>
         </div>
 

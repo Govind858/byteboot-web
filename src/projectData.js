@@ -1,5 +1,6 @@
 import neoTokyoImg from './assets/ProjectScreenshots/neo_tokyo.png';
 import trinityImg from './assets/ProjectScreenshots/trinity.png';
+import blossamBritish from './assets/ProjectScreenshots/blossom_british.png'
 
 export const projects = [
   {
@@ -19,5 +20,14 @@ export const projects = [
     tech: ["React", "Firebase", "Context API", "Lucide React"],
     description: "Trinity is a specialized management and educational tool built to digitize church administrative tasks and automate student examinations.",
     details: `Trinity was conceived to solve the logistical challenges of a local church that was struggling with manual paper-based record-keeping for over a hundred students. I built this application from the ground up to serve as a centralized hub for student data and academic performance. The core of the project is a custom-built examination engine that allows administrators to create and conduct digital assessments in a multiple-choice format. During the development phase, I focused heavily on the user experience for non-technical church staff, ensuring the dashboard was intuitive and secure. By using React's Context API, I managed complex authentication flows to keep student records private. The final product successfully transitioned the church to a fully digital workflow, providing instant automated grading and detailed progress analytics for every student in the system.`
+  },
+  {
+    id:"blossam-british",
+    title:"Blossam British School",
+    image:blossamBritish,
+    category:"shool management",
+    tech: ["React", "Django", "postgres", "python"],
+    description: "Blossom British School Software is a complete digital solution designed to manage students, staff, revenue, and institutional operations efficiently. The system helps schools automate daily administrative tasks, improve communication, and maintain accurate financial and academic records.",
+    detail: "Blossom British School Software is a complete school management system designed to efficiently manage students, staff, revenue, and overall institutional operations. The system handles student admissions, attendance tracking, academic performance, exam management, and fee collection in a centralized platform. It also manages staff records, attendance, payroll, and role-based access control. The financial module tracks revenue, income sources, expenses, and generates detailed reports including monthly and yearly summaries. With a real-time dashboard, secure authentication, automated notifications, and digital record keeping, the software reduces paperwork, improves transparency, and enhances administrative productivity. It is built to provide a smooth, secure, and scalable solution for modern educational institutions.",
   }
 ];

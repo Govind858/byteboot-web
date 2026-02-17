@@ -76,7 +76,7 @@ const ProjectDetail = () => {
             <div ref={heroRef} className="hero-section">
                 <div className="hero-overlay" />
                 <img
-                    src={imageSrc}
+                    src={project.image}
                     alt={project.title}
                     className="hero-image"
                 />
