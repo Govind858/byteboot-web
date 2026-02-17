@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg-color: #050505;
+  --text-color: #ffffff;
+  --accent-color: #00f3ff;
+  --secondary-color: #7000ff;
+  --card-bg: #111;
+  --font-main: 'Outfit', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 4px;
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-title {
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(to right, var(--accent-color), var(--secondary-color));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.t-center {
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: var(--accent-color);
+  z-index: -1;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  color: var(--bg-color);
+  box-shadow: 0 0 20px var(--accent-color);
+}
+
+.btn:hover::before {
+  width: 100%;
+}
+
+/* Loader */
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: var(--bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
