@@ -1,13 +1,14 @@
 /* ==========================================================================
-   Portfolio Section - Updated 2025 styles
-   Reduced vertical height, wider cards, compact tech tags
+   Portfolio Section – Ultra Smooth Scroll + Enhanced UX
    ========================================================================== */
 
 .portfolio-section {
-  padding: 5rem 1rem 7rem;
+  padding: 0rem 1rem 7rem;
   background-color: #0a0a0a;
   color: #e0e0e0;
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
 
 .portfolio-container {
@@ -16,11 +17,10 @@
   width: 100%;
 }
 
-/* Header */
+/* ── Header ──────────────────────────────────────────────────────────────── */
 .portfolio-header {
   text-align: center;
   margin-bottom: 3.5rem;
-  position: relative;
 }
 
 .portfolio-title {
@@ -42,66 +42,85 @@
   border-radius: 2px;
 }
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Horizontal Scroll Grid
-   ────────────────────────────────────────────────────────────────────────── */
-.portfolio-grid {
+/* ── Scroll Container ───────────────────────────────────────────────────── */
+.portfolio-scroll-container {
+  position: relative;
+  width: 100%;
+}
+
+/* ── Horizontal track (ULTRA SMOOTH + NO SCROLLBAR) ─────────────────────── */
+.portfolio-track {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   gap: 1.75rem;
   overflow-x: auto;
+  overflow-y: hidden;
   padding: 1.25rem 1rem 2.5rem 1rem;
+  margin: 0 -0.5rem;
+  
+  /* Enhanced smooth scrolling */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: #4b5563 #1f2937;
+  scroll-snap-type: x mandatory;
+  
+  /* Performance optimizations */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+  
+  /* Hide scrollbar */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.portfolio-grid::-webkit-scrollbar {
-  height: 9px;
+.portfolio-track::-webkit-scrollbar {
+  display: none;
 }
 
-.portfolio-grid::-webkit-scrollbar-track {
-  background: #111827;
-  border-radius: 9px;
+.portfolio-track.dragging {
+  scroll-behavior: auto;
+  scroll-snap-type: none;
 }
 
-.portfolio-grid::-webkit-scrollbar-thumb {
-  background: #4b5563;
-  border-radius: 9px;
-  border: 3px solid #111827;
+.portfolio-track.dragging .project-card {
+  pointer-events: none;
+  user-select: none;
 }
 
-.portfolio-grid::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
-}
-
-/* Each project card - wider & shorter */
+/* ── Card with snap effect ───────────────────────────────────────────────── */
 .project-card {
-  flex: 0 0 400px;                    /* wider cards */
+  flex: 0 0 400px;
   width: 400px;
-  flex-shrink: 0;
   background: #111827;
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   border: 1px solid #1f2937;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+  scroll-snap-align: start;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .project-card:hover {
   transform: translateY(-12px);
   box-shadow: 0 25px 50px -12px rgba(167, 139, 250, 0.25);
-  border-color: #a78bfa44;
+  border-color: rgba(167, 139, 250, 0.27);
 }
 
-/* Image area - significantly reduced height */
+/* Image area */
 .project-image-link {
   position: relative;
   display: block;
-  height: 160px;                      /* reduced vertical space */
+  height: 160px;
   overflow: hidden;
+  pointer-events: auto;
 }
 
 .project-image {
@@ -109,7 +128,8 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.6s ease;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  pointer-events: none;
 }
 
 .project-card:hover .project-image {
@@ -122,13 +142,13 @@
   background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
   opacity: 0.45;
   transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .project-card:hover .image-overlay {
   opacity: 0.75;
 }
 
-/* Hover overlay button */
 .view-project-overlay {
   position: absolute;
   inset: 0;
@@ -139,6 +159,7 @@
   opacity: 0;
   transition: opacity 0.35s ease;
   backdrop-filter: blur(4px);
+  pointer-events: none;
 }
 
 .project-card:hover .view-project-overlay {
@@ -146,34 +167,35 @@
 }
 
 .view-project-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.7rem 1.4rem;
   background: #7c3aed;
-  color: white;
+  color: #fff;
   border-radius: 9999px;
   font-weight: 600;
   font-size: 0.92rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
   box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
 }
 
 .view-project-btn:hover {
   background: #a78bfa;
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(167, 139, 250, 0.5);
 }
 
-/* Card content - reduced padding */
+/* Content */
 .project-content {
-  padding: 1.1rem 1.25rem 1.3rem;     /* less vertical padding */
+  padding: 1.1rem 1.25rem 1.3rem;
+  pointer-events: auto;
 }
 
 .project-header-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  gap: 0.75rem;
   margin-bottom: 0.9rem;
 }
 
@@ -194,6 +216,7 @@
 }
 
 .project-category {
+  flex-shrink: 0;
   font-size: 0.85rem;
   color: #9ca3af;
   font-weight: 500;
@@ -206,19 +229,17 @@
   font-size: 0.92rem;
   color: #9ca3af;
   line-height: 1.55;
-  margin-bottom: 1rem;
-}
-
-/* Tech stack - very compact, almost no spacing between tags */
-.project-tech-stack {
-  margin-top: 0.6rem;
+  margin: 0 0 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .tech-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem 0.35rem;                /* minimal gap */
-  margin-top: 0.3rem;
+  gap: 0.3rem 0.35rem;
 }
 
 .tech-tags span {
@@ -229,59 +250,119 @@
   border-radius: 0.45rem;
   border: 1px solid #374151;
   white-space: nowrap;
+  transition: all 0.2s ease;
 }
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Responsive
-   ────────────────────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .portfolio-section {
-    padding: 4.5rem 1rem 6.5rem;
-  }
+.tech-tags span:hover {
+  background: #2d3748;
+  border-color: #7c3aed;
+  transform: translateY(-1px);
+}
 
+/* ── Scroll fade indicators ──────────────────────────────────────────────── */
+.scroll-fade-left,
+.scroll-fade-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-fade-left {
+  left: 0;
+  background: linear-gradient(to right, #0a0a0a 0%, transparent 100%);
+}
+
+.scroll-fade-right {
+  right: 0;
+  background: linear-gradient(to left, #0a0a0a 0%, transparent 100%);
+}
+
+.portfolio-track:not(:has(:first-child:last-child)) ~ .scroll-fade-left,
+.portfolio-track:not(:has(:first-child:last-child)) ~ .scroll-fade-right {
+  opacity: 0.7;
+}
+
+/* ── States ──────────────────────────────────────────────────────────────── */
+.portfolio-loading,
+.portfolio-empty,
+.portfolio-error {
+  text-align: center;
+  padding: 5rem 0;
+  color: #9ca3af;
+}
+
+.portfolio-retry-btn {
+  margin-top: 1.25rem;
+  padding: 0.65rem 1.75rem;
+  background: transparent;
+  color: #a78bfa;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.portfolio-retry-btn:hover {
+  background: rgba(124, 58, 237, 0.1);
+  border-color: #a78bfa;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
   .portfolio-title {
     font-size: 2.7rem;
   }
-
   .project-card {
     flex: 0 0 360px;
     width: 360px;
   }
-
   .project-image-link {
     height: 150px;
   }
 }
 
 @media (max-width: 640px) {
-  .portfolio-grid {
+  .portfolio-track {
     gap: 1.25rem;
     padding: 1rem 0.5rem 2.5rem 0.5rem;
   }
-
   .project-card {
     flex: 0 0 88vw;
     width: 88vw;
   }
-
   .project-image-link {
-    height: 40vw;                     /* proportional, still short */
+    height: 40vw;
   }
-
-  .project-content {
-    padding: 1rem 1.1rem 1.2rem;
-  }
-
-  .tech-tags {
-    gap: 0.25rem 0.3rem;
-  }
-
-  .tech-tags span {
-    padding: 0.22rem 0.58rem;
-    font-size: 0.74rem;
-  }
-
   .portfolio-title {
     font-size: 2.4rem;
   }
+  
+  .scroll-fade-left,
+  .scroll-fade-right {
+    width: 30px;
+  }
+}
+
+/* Smooth entrance animation for cards */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.project-card {
+  animation: cardEntrance 0.6s ease-out forwards;
+  animation-delay: calc(var(--card-index, 0) * 0.1s);
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import "./ClientCarousel.css"
 
 // Import all client logos
 import redDefend from '../assets/ClientLogos/Red_Defend.png';
@@ -61,33 +62,7 @@ const ClientCarousel: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Inline styles for animation */}
-      <style jsx>{`
-        @keyframes scroll {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-50%);
-          }
-        }
-
-        .animate-scroll {
-          animation: scroll 30s linear infinite;
-          will-change: transform;
-        }
-
-        .animate-scroll:hover {
-          animation-play-state: paused;
-        }
-
-        /* Optional: slightly smoother on some browsers */
-        .animate-scroll {
-          animation-timing-function: linear;
-        }
-      `}</style>
+      </div>  
     </div>
   );
 };

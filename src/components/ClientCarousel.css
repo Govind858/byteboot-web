@@ -1,0 +1,28 @@
+/* src/components/ClientCarousel.module.css */
+/* or src/styles/ClientCarousel.css — choose one naming style */
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+  will-change: transform;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Optional improvements you might want */
+.animate-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0); /* better performance on some browsers */
+}

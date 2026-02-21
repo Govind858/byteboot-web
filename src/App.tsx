@@ -10,9 +10,12 @@ import Portfolio from './components/Portfolio';
 import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import ProjectDetail from './components/ProjectDetail'; // Import the new component
+import ProjectDetail from './components/ProjectDetail'; 
+import ProjectsDashboard from './Admin/Admin'
+import ReviewScroll from './components/UsersReviews';
 
 import './App.css';
+import ProductsPage from './Admin/Admin';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,12 +58,15 @@ function App() {
               <Services />
               <Portfolio />
               <Blog />
+              <ReviewScroll/>
               <Contact />
             </main>
             <Footer />
           </>
         } />
         <Route path="/project/:id" element={<ProjectDetail />} />
+        <Route path='/product' element={<ProductsPage/>} /> 
+        <Route path="/product-dashboard" element={<ProjectsDashboard/>}  />  
       </Routes>
 
       {/* Dynamic Cursor Styles */}
