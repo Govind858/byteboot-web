@@ -266,7 +266,7 @@ const GOOGLE_URL =
   "https://www.google.com/maps/place/Byteboot+techno+Solutions+Pvt+Ltd/@9.9672698,76.2997757,18z/data=!4m6!3m5!1s0x3b080d08fa24c74d:0x6e4d855cfe4fbfd6!8m2!3d9.9674011!4d76.2997183!16s%2Fg%2F11v04131yc?authuser=0&entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D";
 
 const UsersReviews = () => {
-  const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+  const avg = 4.9;
 
   // Split evenly into two rows
   const mid   = Math.ceil(reviews.length / 2);

@@ -285,7 +285,7 @@
   margin: 36px auto 0;
   padding: 0 24px;
   display: flex;
-  justify-content: end;
+  justify-content: endp;
   position: relative;
   z-index: 1;
 }

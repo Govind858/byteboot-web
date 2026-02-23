@@ -1,8 +1,10 @@
 /* Services.css */
 
 :root {
-  --accent-color: #00f3ff;        /* cyan */
-  --secondary-color: #7000ff;     /* purple/magenta */
+  --accent-color: #00f3ff;
+  /* cyan */
+  --secondary-color: #7000ff;
+  /* purple/magenta */
   --bg-dark: #0a0a0a;
   --card-bg: #151515;
   --text-muted: #aaaaaa;
@@ -11,7 +13,7 @@
 }
 
 .services-section {
-  height: 100vh;
+  height: 70%;
   background: var(--bg-dark);
   position: relative;
   overflow: hidden;
@@ -19,29 +21,37 @@
 }
 
 .services-wrapper {
-  padding: 0 0 30px 0;
-  height: 70%;
+  height: 80%;
+}
+
+.service-header {
+  padding: 3rem 8vw 0;
+  max-width: 560px;
 }
 
 .section-title {
-  text-align: center;
-  font-size: 3.5rem;
+  text-align: left;
+  font-size: clamp(24px, 3.5vw, 42px);
   font-weight: 700;
-  margin-bottom: 3rem;
-  
-  /* Updated gradient using both colors */
-  background: linear-gradient(90deg, 
-    var(--accent-color), 
-    var(--secondary-color), 
-    var(--accent-color)
-  );
+  color: white;
+  margin-bottom: 0.6rem;
+  line-height: 1.15;
+}
+
+.section-title span {
+  background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  
-  /* Optional: subtle shine/animation effect */
-  background-size: 200% auto;
-  animation: shine 6s linear infinite;
+}
+
+.section-subtitle {
+  text-align: left;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  max-width: 480px;
 }
 
 /* Shine animation for gradient */

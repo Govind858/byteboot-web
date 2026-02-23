@@ -1,6 +1,6 @@
 import React from 'react';
 import "./ClientCarousel.css"
-
+  
 // Import all client logos
 import redDefend from '../assets/ClientLogos/Red_Defend.png';
 import emmyFitness from '../assets/ClientLogos/emmy_fitness.jpg';

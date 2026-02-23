@@ -65,8 +65,10 @@ const Services: React.FC = () => {
   return (
     <section id="services" ref={sectionRef} className="services-section">
       <div className="services-wrapper">
-        <h2 className="section-title">Our Services</h2>
-
+          <div className="service-header">
+  <h2 className="section-title">Our <span>Services</span></h2>
+  <p className="section-subtitle">We craft digital experiences that drive results — from strategy to execution, we've got you covered.</p>
+</div>
         <div ref={trackRef} className="services-track">
           {services.map((service) => (
             <div

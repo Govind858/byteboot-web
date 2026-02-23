@@ -30,7 +30,7 @@ const Portfolio: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Smooth scroll animation frame
-const scrollAnimationFrame = useRef<number | null>(null);
+  const scrollAnimationFrame = useRef<number | null>(null);
 
   // Fetch projects
   useEffect(() => {
@@ -103,10 +103,10 @@ const scrollAnimationFrame = useRef<number | null>(null);
     const track = trackRef.current;
     if (!track) return;
 
-  let wheelTimeout: number | undefined;   // or just number    
+    let wheelTimeout: number | undefined;   // or just number    
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      
+
       const atStart = track.scrollLeft <= 0;
       const atEnd = Math.abs(track.scrollLeft + track.clientWidth - track.scrollWidth) < 2;
 
@@ -117,14 +117,14 @@ const scrollAnimationFrame = useRef<number | null>(null);
 
       // Smooth scroll with easing
       const scrollAmount = e.deltaY * 1.5;
-      
+
       // Clear any existing timeout
       if (wheelTimeout) clearTimeout(wheelTimeout);
-      
+
       // Add smooth scroll behavior
       track.style.scrollBehavior = 'smooth';
       track.scrollLeft += scrollAmount;
-      
+
       // Remove smooth behavior after scrolling stops
       wheelTimeout = setTimeout(() => {
         track.style.scrollBehavior = 'auto';
@@ -141,11 +141,11 @@ const scrollAnimationFrame = useRef<number | null>(null);
   // Mouse drag scrolling
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!trackRef.current) return;
-    
+
     setIsDragging(true);
     setStartX(e.pageX - trackRef.current.offsetLeft);
     setScrollLeft(trackRef.current.scrollLeft);
-    
+
     // Disable smooth scrolling during drag
     trackRef.current.style.scrollBehavior = 'auto';
     trackRef.current.style.cursor = 'grabbing';
@@ -153,9 +153,9 @@ const scrollAnimationFrame = useRef<number | null>(null);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isDragging || !trackRef.current) return;
-    
+
     e.preventDefault();
-    
+
     const x = e.pageX - trackRef.current.offsetLeft;
     const walk = (x - startX) * 2; // Scroll speed multiplier
     trackRef.current.scrollLeft = scrollLeft - walk;
@@ -179,10 +179,8 @@ const scrollAnimationFrame = useRef<number | null>(null);
     <section id="portfolio" className="portfolio-section">
       <div className="portfolio-container">
         <div className="portfolio-header">
-          <h2 ref={titleRef} className="portfolio-title">
-            Products
-          </h2>
-          <div className="header-underline" />
+          <h2 ref={titleRef} className="portfolio-title">Our <span>Products</span></h2>
+          <p className="portfolio-subtitle">A showcase of our finest work — built with precision, designed to perform.</p>
         </div>
 
         {loading && (
@@ -194,8 +192,8 @@ const scrollAnimationFrame = useRef<number | null>(null);
         {error && (
           <div className="portfolio-error">
             <p>{error}</p>
-            <button 
-              onClick={() => window.location.reload()} 
+            <button
+              onClick={() => window.location.reload()}
               className="portfolio-retry-btn"
             >
               Try Again
@@ -211,8 +209,8 @@ const scrollAnimationFrame = useRef<number | null>(null);
 
         {!loading && !error && projects.length > 0 && (
           <div className="portfolio-scroll-container">
-            <div 
-              ref={trackRef} 
+            <div
+              ref={trackRef}
               className={`portfolio-track ${isDragging ? 'dragging' : ''}`}
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
@@ -265,7 +263,7 @@ const scrollAnimationFrame = useRef<number | null>(null);
                 </article>
               ))}
             </div>
-            
+
             {/* Optional scroll indicators */}
             <div className="scroll-fade-left" />
             <div className="scroll-fade-right" />
