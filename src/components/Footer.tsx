@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import { Mail, ArrowUpRight } from 'lucide-react';
+import { Mail, ArrowUpRight, MapPin } from 'lucide-react';
 
 const navLinks = [
     { label: 'About', href: '#about' },
@@ -57,8 +57,8 @@ const css = `
   /* ── Top row ─────────────────────────────────── */
   .footer-top {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
-    gap: 4rem;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
     padding-bottom: 4rem;
     border-bottom: 1px solid #18181b;
   }
@@ -186,6 +186,46 @@ const css = `
 
   .footer-social-list svg { font-size: 1rem; }
 
+  /* ── Address column ──────────────────────────── */
+  .footer-address {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .footer-address-pin {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-address-pin svg {
+    color: #22d3ee;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .footer-address-name {
+    color: #a1a1aa;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .footer-address-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-left: 0;
+  }
+
+  .footer-address-lines span {
+    color: #52525b;
+    font-size: 0.84rem;
+    line-height: 1.5;
+  }
+
   /* ── Bottom bar ──────────────────────────────── */
   .footer-bottom {
     display: flex;
@@ -226,6 +266,14 @@ const css = `
   }
 
   /* ── Responsive ──────────────────────────────── */
+  @media (max-width: 1100px) {
+    .footer-top {
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 2.5rem;
+    }
+    .footer-address-col { grid-column: span 1; }
+  }
+
   @media (max-width: 900px) {
     .footer-top {
       grid-template-columns: 1fr 1fr;
@@ -302,6 +350,23 @@ const Footer: React.FC = () => {
                                 </li>
                             ))}
                         </ul>
+                    </div>
+
+                    {/* Address */}
+                    <div className="footer-address-col">
+                        <p className="footer-col-title">Our Office</p>
+                        <div className="footer-address">
+                            <div className="footer-address-pin">
+                                <MapPin size={14} />
+                                <span className="footer-address-name">ByteBoot Techo Solutions</span>
+                            </div>
+                            <div className="footer-address-lines">
+                                <span>MileStone Building, 2nd Floor</span>
+                                <span>Kadavanthara</span>
+                                <span>Ernakulam, Kerala</span>
+                                <span>India</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

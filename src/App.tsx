@@ -14,7 +14,6 @@ import ProjectDetail from './components/ProjectDetail';
 import ProjectsDashboard from './Admin/Admin'
 import Login from './Admin/Login'
 import ReviewScroll from './components/UsersReviews';
-import ClientCarousel from './components/ClientCarousel';
 
 import './App.css';
 import ProductsPage from './Admin/Admin';
