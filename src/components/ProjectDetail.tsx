@@ -10,23 +10,20 @@ const ProjectDetail = () => {
     const { id } = useParams();
     const heroRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
+    const imageRef = useRef<HTMLImageElement>(null);
 
-    // State for API data
     const [project, setProject] = useState<Project | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    // 1. Fetch the project data from the API
+    // 1. Fetch project data
     useEffect(() => {
         const fetchProject = async () => {
             if (!id) return;
-            
             try {
                 setLoading(true);
                 setError(null);
-                
                 const response = await getProductById(id);
-                // Based on your backend, the actual data is inside response.product
                 if (response.success) {
                     setProject(response.product);
                 } else {
@@ -39,46 +36,82 @@ const ProjectDetail = () => {
                 setLoading(false);
             }
         };
-
         fetchProject();
     }, [id]);
 
-    // 2. Handle GSAP Animations AFTER data is loaded
+    // 2. GSAP animations after data loads
     useEffect(() => {
-        // Only run animation if we have finished loading and have a project
         if (!loading && project && heroRef.current && contentRef.current) {
             window.scrollTo(0, 0);
 
             const tl = gsap.timeline();
 
+            // Hero image Ken Burns
+            if (imageRef.current) {
+                gsap.fromTo(imageRef.current,
+                    { scale: 1.12 },
+                    { scale: 1, duration: 2.2, ease: 'power4.out' }
+                );
+            }
+
+            // Hero content
             tl.fromTo(heroRef.current,
-                { opacity: 0, scale: 1.05 },
-                { opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out' }
+                { opacity: 0 },
+                { opacity: 1, duration: 0.6, ease: 'power2.out' }
             )
-            .fromTo(contentRef.current.children,
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
-                "-=0.6"
+                .fromTo('.hero-category',
+                    { opacity: 0, y: 16 },
+                    { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' },
+                    '-=0.2'
+                )
+                .fromTo('.hero-title',
+                    { opacity: 0, y: 40 },
+                    { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' },
+                    '-=0.5'
+                )
+                .fromTo('.hero-scroll-hint',
+                    { opacity: 0 },
+                    { opacity: 1, duration: 0.5, ease: 'power2.out' },
+                    '-=0.2'
+                );
+
+            // Content stagger
+            gsap.fromTo(contentRef.current.children,
+                { opacity: 0, y: 40 },
+                {
+                    opacity: 1, y: 0, duration: 0.9,
+                    stagger: 0.12, ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: contentRef.current,
+                        start: 'top 80%',
+                    },
+                    delay: 0.2
+                }
             );
         }
     }, [loading, project]);
 
-    // UI: Loading State
+    // — Loading State —
     if (loading) {
         return (
-            <div className="project-detail-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-                <h2 style={{ fontSize: '1.5rem', color: '#22d3ee' }}>Loading project...</h2>
+            <div className="state-screen">
+                <div className="state-inner">
+                    <div className="state-loader" />
+                    <p className="state-label">Loading</p>
+                    <p className="state-sub">Fetching project data...</p>
+                </div>
             </div>
         );
     }
 
-    // UI: Error or Not Found State
+    // — Error State —
     if (error || !project) {
         return (
-            <div className="project-detail-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-                <div style={{ textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{error || "Project not found"}</h2>
-                    <Link to="/" style={{ color: '#22d3ee', textDecoration: 'underline' }}>Back to Home</Link>
+            <div className="state-screen">
+                <div className="state-inner">
+                    <p className="state-label">{error || "Not Found"}</p>
+                    <p className="state-sub">The project you're looking for doesn't exist.</p>
+                    <Link to="/" className="state-link">← Return Home</Link>
                 </div>
             </div>
         );
@@ -86,79 +119,102 @@ const ProjectDetail = () => {
 
     return (
         <div className="project-detail-container">
-            {/* Navigation */}
+
+            {/* ── Navigation ── */}
             <nav className="project-nav">
                 <div className="nav-container">
-                    <Link
-                        to="/"
-                        className="back-link group"
-                    >
-                        <ArrowLeft size={20} />
+                    <Link to="/" className="back-link group">
+                        <ArrowLeft size={16} strokeWidth={1.5} />
                         <span className="back-text">Back</span>
                     </Link>
+                    <div className="nav-dot" />
                 </div>
             </nav>
 
-            {/* Hero Section */}
+            {/* ── Hero ── */}
             <div ref={heroRef} className="hero-section">
                 <div className="hero-overlay" />
-                {/* Now using the Cloudinary URL directly from your database */}
                 <img
-                    src={project.image} 
+                    ref={imageRef}
+                    src={project.image}
                     alt={project.title}
                     className="hero-image"
                 />
                 <div className="hero-content">
                     <div className="hero-inner">
-                        <span className="hero-category">
-                            {project.category}
-                        </span>
-                        <h1 className="hero-title">
-                            {project.title}
-                        </h1>
+                        <div>
+                            <div className="hero-label-group">
+                                <span className="hero-category">{project.category}</span>
+                                <div className="hero-divider" />
+                            </div>
+                            <h1 className="hero-title">{project.title}</h1>
+                            <div className="hero-scroll-hint">
+                                <div className="scroll-line" />
+                                <span>Scroll to explore</span>
+                            </div>
+                        </div>
+                        <div className="hero-meta">
+                            <span className="hero-meta-item">Case Study</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Content */}
-            <div ref={contentRef} className="content-section">
-                <div className="content-grid">
+            {/* ── Content ── */}
+            <div className="content-section">
+                <div ref={contentRef} className="content-grid">
+
                     {/* Main Info */}
                     <div className="main-info">
                         <div className="info-block">
-                            <h2>Overview</h2>
-                            <p>
-                                {project.description}
-                            </p>
+                            <div className="info-block-header">
+                                <span className="info-block-num">01</span>
+                                <h2>Overview</h2>
+                                <div className="info-block-line" />
+                            </div>
+                            <p>{project.description}</p>
                         </div>
 
                         <div className="info-block">
-                            <h2>Technical Details</h2>
-                            <p className="whitespace-pre-line">
-                                {project.details}
-                            </p>
+                            <div className="info-block-header">
+                                <span className="info-block-num">02</span>
+                                <h2>Technical Details</h2>
+                                <div className="info-block-line" />
+                            </div>
+                            <p className="whitespace-pre-line">{project.details}</p>
                         </div>
                     </div>
 
                     {/* Sidebar */}
                     <div className="sidebar">
                         <div className="sticky-wrapper">
+
+                            {/* Tech Stack */}
                             <div className="tech-panel">
-                                <h3>Technologies</h3>
+                                <h3>Tech Stack</h3>
                                 <div className="tech-tags-wrapper">
-                                    {/* Using optional chaining (?.) just in case tech array is missing in DB */}
                                     {project.techStack?.map((t: string) => (
-                                        <span
-                                            key={t}
-                                            className="tech-tag"
-                                        >
-                                            {t}
-                                        </span>
+                                        <span key={t} className="tech-tag">{t}</span>
                                     ))}
                                 </div>
                             </div>
+
+                            {/* Info Panel */}
+                            <div className="info-panel">
+                                <div className="info-row">
+                                    <span className="info-row-label">Category</span>
+                                    <span className="info-row-value">{project.category}</span>
+                                </div>
+                                <div className="info-row-sep" />
+                                <div className="info-row">
+                                    <span className="info-row-label">Type</span>
+                                    <span className="info-row-value">Case Study</span>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

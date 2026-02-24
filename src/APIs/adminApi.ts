@@ -1,4 +1,6 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://backend.byteboot.in";
+// const BASE_URL = "http://localhost:3000";
+
 
 // adminApi.js or wherever your API functions are
 export const createProduct = async (formData: FormData) => {
@@ -15,7 +17,7 @@ export const createProduct = async (formData: FormData) => {
       try {
         const errData = await response.json();
         errorMsg = errData.message || errorMsg;
-      } catch {}
+      } catch { }
       throw new Error(errorMsg);
     }
 
@@ -74,11 +76,31 @@ export const getProductById = async (id: string) => {
     }
 
     const data = await response.json();
-    console.log("Actual JSON data:", data);          
+    console.log("Actual JSON data:", data);
 
     return data;
   } catch (error) {
     console.error(`Error fetching product with ID ${id}:`, error);
+    throw error;
+  }
+};
+
+export const loginAdmin = async (userName: string, password: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userName, password }),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => ({}));
+      throw new Error(errorBody.message || `Login failed: ${response.status}`);
+    }
+
+    return await response.json(); // { message, token, admin }
+  } catch (error) {
+    console.error("Login failed:", error);
     throw error;
   }
 };

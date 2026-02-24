@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import './Contact.css';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const Contact: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ const Contact: React.FC = () => {
         email: '',
         message: '',
     });
+    const headerRef = useScrollReveal<HTMLDivElement>({ delay: 0 });
+    const gridRef = useScrollReveal<HTMLDivElement>({ delay: 0.12, distance: 50 });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +33,7 @@ const Contact: React.FC = () => {
 
             <div className="contact-container">
                 {/* Header */}
-                <div className="contact-header">
+                <div ref={headerRef} className="contact-header">
                     <h2 className="contact-title">
                         Let's <span className="gradient-text">Collaborate</span>
                     </h2>
@@ -40,7 +43,7 @@ const Contact: React.FC = () => {
                     </p>
                 </div>
 
-                <div className="contact-grid">
+                <div ref={gridRef} className="contact-grid">
                     {/* ─── Left: Contact Form ─── */}
                     <div className="contact-form-card">
                         <h3 className="form-title">Get in Touch</h3>

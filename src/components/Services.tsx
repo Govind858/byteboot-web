@@ -3,7 +3,7 @@ import { services } from '../data/mockData';
 import * as Icons from 'react-icons/fa';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
+import { useScrollReveal } from '../hooks/useScrollReveal';
 import './Services.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,6 +12,7 @@ const Services: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
+  const headerRef = useScrollReveal<HTMLDivElement>({ delay: 0 });
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -65,10 +66,10 @@ const Services: React.FC = () => {
   return (
     <section id="services" ref={sectionRef} className="services-section">
       <div className="services-wrapper">
-          <div className="service-header">
-  <h2 className="section-title">Our <span>Services</span></h2>
-  <p className="section-subtitle">We craft digital experiences that drive results — from strategy to execution, we've got you covered.</p>
-</div>
+        <div ref={headerRef} className="service-header">
+          <h2 className="section-title">Our <span>Services</span></h2>
+          <p className="section-subtitle">We craft digital experiences that drive results — from strategy to execution, we've got you covered.</p>
+        </div>
         <div ref={trackRef} className="services-track">
           {services.map((service) => (
             <div

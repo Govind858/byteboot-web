@@ -10,12 +10,15 @@ import Portfolio from './components/Portfolio';
 import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import ProjectDetail from './components/ProjectDetail'; 
+import ProjectDetail from './components/ProjectDetail';
 import ProjectsDashboard from './Admin/Admin'
+import Login from './Admin/Login'
 import ReviewScroll from './components/UsersReviews';
+import ClientCarousel from './components/ClientCarousel';
 
 import './App.css';
 import ProductsPage from './Admin/Admin';
+import ClientComponent from './components/ClientComponent';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,17 +59,19 @@ function App() {
               <Hero />
               <About />
               <Services />
+              <ClientComponent />
               <Portfolio />
               <Blog />
-              <ReviewScroll/>
+              <ReviewScroll />
               <Contact />
             </main>
             <Footer />
           </>
         } />
         <Route path="/project/:id" element={<ProjectDetail />} />
-        <Route path='/product' element={<ProductsPage/>} /> 
-        <Route path="/product-dashboard" element={<ProjectsDashboard/>}  />  
+        <Route path='/product' element={<ProductsPage />} />
+        <Route path="/product-dashboard" element={<ProjectsDashboard />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
 
       {/* Dynamic Cursor Styles */}

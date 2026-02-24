@@ -102,9 +102,9 @@ const Hero: React.FC = () => {
                     width: '200%',
                     height: '200%',
                     background: `
-                        radial-gradient(circle at 50% 50%, rgba(112, 0, 255, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(0, 243, 255, 0.05) 0%, transparent 40%)
-                    `,
+                            radial-gradient(circle at 50% 50%, rgba(112, 0, 255, 0.1) 0%, transparent 50%),
+                            radial-gradient(circle at 80% 20%, rgba(0, 243, 255, 0.05) 0%, transparent 40%)
+                        `,
                     zIndex: -1,
                     pointerEvents: 'none'
                 }}
@@ -148,21 +148,6 @@ const Hero: React.FC = () => {
                 </h1>
 
             </div>
-
-            {/* Client Carousel */}
-            <div style={{
-                position: 'absolute',
-                bottom: '80px',
-                width: '100%',
-                maxWidth: '1200px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                zIndex: 2,
-                padding: '0 2rem'
-            }}>
-                <ClientCarousel />
-            </div>
-
             <a href="#about" className="scroll-indicator" style={{
                 position: 'absolute',
                 bottom: '40px',
@@ -191,16 +176,16 @@ const Hero: React.FC = () => {
             </a>
 
             <style>{`
-                @keyframes scrollWheel {
-                    0% { transform: translateY(0); opacity: 1; }
-                    100% { transform: translateY(15px); opacity: 0; }
-                }
-                .word:hover {
-                    transform: scale(1.05) skewX(-5deg) !important;
-                    transition: transform 0.3s ease;
-                    cursor: default;     
-                }
-            `}</style>
+                    @keyframes scrollWheel {
+                        0% { transform: translateY(0); opacity: 1; }
+                        100% { transform: translateY(15px); opacity: 0; }
+                    }
+                    .word:hover {
+                        transform: scale(1.05) skewX(-5deg) !important;
+                        transition: transform 0.3s ease;
+                        cursor: default;     
+                    }
+                `}</style>
         </section>
     );
 };

@@ -1,8 +1,13 @@
 // About.tsx
 import "./About.css";
 import { Bot, Palette, Cloud } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const About = () => {
+  const headerRef = useScrollReveal<HTMLElement>({ delay: 0 });
+  const cardsRef = useScrollReveal<HTMLDivElement>({ delay: 0.1, distance: 50 });
+  const taglineRef = useScrollReveal<HTMLDivElement>({ delay: 0.15 });
+
   return (
     <section id="about" className="about-section">
       <div className="background-grid"></div>
@@ -10,14 +15,14 @@ const About = () => {
       <div className="orb orb-bottom-right"></div>
 
       <div className="container">
-        <header className="section-header">
+        <header ref={headerRef} className="section-header">
           <h2>
             <span className="gradient-text">Who We Are</span>
           </h2>
           <div className="header-line"></div>
         </header>
 
-        <div className="cards-grid">
+        <div ref={cardsRef} className="cards-grid">
           {/* Card 1 */}
           <div className="feature-card cyan-card">
             <div className="card-icon cyan-icon">
@@ -79,28 +84,28 @@ const About = () => {
           <div className="full-width-card">
             <h3 className="full-card-title">What We Build</h3>
             <div className="build-items">
-  <div className="build-item">
-    <Bot className="build-icon" size={32} strokeWidth={1.8} />
-    <h4>AI-Native Platforms</h4>
-    <p>Machine learning, LLM integration, intelligent automation</p>
-  </div>
+              <div className="build-item">
+                <Bot className="build-icon" size={32} strokeWidth={1.8} />
+                <h4>AI-Native Platforms</h4>
+                <p>Machine learning, LLM integration, intelligent automation</p>
+              </div>
 
-  <div className="build-item">
-    <Palette className="build-icon" size={32} strokeWidth={1.8} />
-    <h4>Immersive Experiences</h4>
-    <p>3D web, real-time interactions, stunning interfaces</p>
-  </div>
+              <div className="build-item">
+                <Palette className="build-icon" size={32} strokeWidth={1.8} />
+                <h4>Immersive Experiences</h4>
+                <p>3D web, real-time interactions, stunning interfaces</p>
+              </div>
 
-  <div className="build-item">
-    <Cloud className="build-icon" size={32} strokeWidth={1.8} />
-    <h4>Enterprise Cloud</h4>
-    <p>Scalable infrastructure, microservices, DevOps excellence</p>
-  </div>
-</div>
+              <div className="build-item">
+                <Cloud className="build-icon" size={32} strokeWidth={1.8} />
+                <h4>Enterprise Cloud</h4>
+                <p>Scalable infrastructure, microservices, DevOps excellence</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="tagline-wrapper">
+        <div ref={taglineRef} className="tagline-wrapper">
           <p className="tagline">
             We don't just build software. We build{" "}
             <span>foundations for tomorrow's breakthroughs</span>.

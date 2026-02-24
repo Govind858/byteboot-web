@@ -1,13 +1,11 @@
 // src/components/Portfolio.tsx
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ArrowUpRight } from 'lucide-react';
 import { getProducts } from '../APIs/adminApi';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 import './Portfolio.css';
 
-gsap.registerPlugin(ScrollTrigger);
 
 interface Project {
   id: string;
@@ -19,7 +17,7 @@ interface Project {
 }
 
 const Portfolio: React.FC = () => {
-  const titleRef = useRef<HTMLHeadingElement>(null);
+  const titleRef = useScrollReveal<HTMLDivElement>({ delay: 0 });
   const trackRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -73,59 +71,29 @@ const Portfolio: React.FC = () => {
     };
   }, []);
 
-  // Title animation
-  useEffect(() => {
-    if (loading || error || !titleRef.current) return;
-
-    gsap.fromTo(
-      titleRef.current,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse',
-        },
-      }
-    );
-
-    return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
-    };
-  }, [loading, error]);
-
   // Smooth wheel scrolling with momentum
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    let wheelTimeout: number | undefined;   // or just number    
+    let wheelTimeout: number | undefined;
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
 
       const atStart = track.scrollLeft <= 0;
       const atEnd = Math.abs(track.scrollLeft + track.clientWidth - track.scrollWidth) < 2;
 
-      // Allow normal vertical page scroll when at edges
       if ((atStart && e.deltaY < 0) || (atEnd && e.deltaY > 0)) {
         return;
       }
 
-      // Smooth scroll with easing
       const scrollAmount = e.deltaY * 1.5;
 
-      // Clear any existing timeout
       if (wheelTimeout) clearTimeout(wheelTimeout);
 
-      // Add smooth scroll behavior
       track.style.scrollBehavior = 'smooth';
       track.scrollLeft += scrollAmount;
 
-      // Remove smooth behavior after scrolling stops
       wheelTimeout = setTimeout(() => {
         track.style.scrollBehavior = 'auto';
       }, 100);
@@ -141,72 +109,72 @@ const Portfolio: React.FC = () => {
   // Mouse drag scrolling
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!trackRef.current) return;
-
     setIsDragging(true);
     setStartX(e.pageX - trackRef.current.offsetLeft);
     setScrollLeft(trackRef.current.scrollLeft);
-
-    // Disable smooth scrolling during drag
     trackRef.current.style.scrollBehavior = 'auto';
     trackRef.current.style.cursor = 'grabbing';
   }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isDragging || !trackRef.current) return;
-
     e.preventDefault();
-
     const x = e.pageX - trackRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll speed multiplier
+    const walk = (x - startX) * 2;
     trackRef.current.scrollLeft = scrollLeft - walk;
   }, [isDragging, startX, scrollLeft]);
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-    if (trackRef.current) {
-      trackRef.current.style.cursor = 'grab';
-    }
+    if (trackRef.current) trackRef.current.style.cursor = 'grab';
   }, []);
 
   const handleMouseLeave = useCallback(() => {
     setIsDragging(false);
-    if (trackRef.current) {
-      trackRef.current.style.cursor = 'grab';
-    }
+    if (trackRef.current) trackRef.current.style.cursor = 'grab';
   }, []);
 
   return (
     <section id="portfolio" className="portfolio-section">
       <div className="portfolio-container">
-        <div className="portfolio-header">
-          <h2 ref={titleRef} className="portfolio-title">Our <span>Products</span></h2>
-          <p className="portfolio-subtitle">A showcase of our finest work — built with precision, designed to perform.</p>
+
+        {/* ── Header ── */}
+        <div ref={titleRef} className="portfolio-header">
+          <h2 className="portfolio-title">Our <span>Products</span></h2>
+          <p className="portfolio-subtitle">
+            A showcase of our finest work — built with precision, designed to perform.
+          </p>
         </div>
 
+        {/* ── Loading ── */}
         {loading && (
           <div className="portfolio-loading">
-            <p>Loading products...</p>
+            <div className="portfolio-loading-track">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="portfolio-skeleton-card" style={{ animationDelay: `${i * 0.15}s` }} />
+              ))}
+            </div>
           </div>
         )}
 
+        {/* ── Error ── */}
         {error && (
           <div className="portfolio-error">
             <p>{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="portfolio-retry-btn"
-            >
+            <button onClick={() => window.location.reload()} className="portfolio-retry-btn">
               Try Again
             </button>
           </div>
         )}
 
+        {/* ── Empty ── */}
         {!loading && !error && projects.length === 0 && (
           <div className="portfolio-empty">
             <p>No products available at the moment.</p>
           </div>
         )}
 
+        {/* ── Cards ── */}
         {!loading && !error && projects.length > 0 && (
           <div className="portfolio-scroll-container">
             <div
@@ -218,53 +186,82 @@ const Portfolio: React.FC = () => {
               onMouseLeave={handleMouseLeave}
               style={{ cursor: 'grab' }}
             >
-              {projects.map((project) => (
-                <article key={project.id} className="project-card">
+              {projects.map((project, index) => (
+                <article
+                  key={project.id}
+                  className="project-card"
+                  style={{ animationDelay: `${index * 0.08}s` }}
+                >
+                  {/* Image area */}
                   <Link
                     to={`/project/${project.id === 'new-tokyo' ? 'neo-tokyo' : project.id}`}
-                    className="project-image-link"
+                    className="card-img-wrap"
                     draggable="false"
                   >
-                    <div className="image-overlay" />
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="project-image"
-                      loading="lazy"
-                      draggable="false"
-                    />
-                    <div className="view-project-overlay">
-                      <span className="view-project-btn">
-                        View Project <ArrowRight size={18} />
-                      </span>
-                    </div>
+                    {project.image && (
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="card-img"
+                        loading="lazy"
+                        draggable="false"
+                      />
+                    )}
+                    <div className="card-img-fade" />
+
+                    {/* Category badge */}
+                    <span className="card-badge">{project.category}</span>
+
+                    {/* Arrow button — visible on hover */}
+                    <span className="card-arrow-btn" aria-hidden="true">
+                      <ArrowUpRight size={14} strokeWidth={2} />
+                    </span>
                   </Link>
 
-                  <div className="project-content">
-                    <div className="project-header-row">
-                      <h3 className="project-title">
-                        <Link to={`/project/${project.id === 'new-tokyo' ? 'neo-tokyo' : project.id}`}>
-                          {project.title}
-                        </Link>
-                      </h3>
-                      <span className="project-category">{project.category}</span>
-                    </div>
+                  {/* Body */}
+                  <div className="card-body">
+                    <h3 className="card-title">
+                      <Link
+                        to={`/project/${project.id === 'new-tokyo' ? 'neo-tokyo' : project.id}`}
+                        draggable="false"
+                      >
+                        {project.title}
+                      </Link>
+                    </h3>
 
-                    <p className="project-description">
-                      {project.description}
-                    </p>
+                    <p className="card-desc">{project.description}</p>
 
-                    <div className="tech-tags">
-                      {project.tech.map((techItem, idx) => (
-                        <span key={`${techItem}-${idx}`}>{techItem}</span>
-                      ))}
+                    {/* Tech tags */}
+                    {project.tech.length > 0 && (
+                      <div className="card-tags">
+                        {project.tech.slice(0, 3).map((t, idx) => (
+                          <span key={`${t}-${idx}`} className="card-tag">{t}</span>
+                        ))}
+                        {project.tech.length > 3 && (
+                          <span className="card-tag">+{project.tech.length - 3}</span>
+                        )}
+                      </div>
+                    )}
+
+                    <div className="card-divider" />
+
+                    <div className="card-footer">
+                      <Link
+                        to={`/project/${project.id === 'new-tokyo' ? 'neo-tokyo' : project.id}`}
+                        className="card-cta"
+                        draggable="false"
+                      >
+                        View Project
+                        <ArrowUpRight size={14} strokeWidth={2} className="card-cta-icon" />
+                      </Link>
+                      <div className="card-dot-indicator" />
                     </div>
                   </div>
                 </article>
               ))}
             </div>
 
-            {/* Optional scroll indicators */}
+            {/* Edge fades */}
             <div className="scroll-fade-left" />
             <div className="scroll-fade-right" />
           </div>
