@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
+import type { ReactNode } from 'react';
 
-const ProtectedRoute = ({ children }) => {
-  
-  const isAuthenticated = localStorage.getItem('adminToken'); 
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+  const isAuthenticated = localStorage.getItem('adminToken');
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }

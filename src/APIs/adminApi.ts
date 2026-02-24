@@ -1,5 +1,5 @@
-// const BASE_URL = "https://backend.byteboot.in";
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://backend.byteboot.in";
+// const BASE_URL = "http://localhost:3000";
 
 
 // adminApi.js or wherever your API functions are
@@ -132,7 +132,7 @@ export const updateProduct = async (id: string, formData: FormData) => {
       // Do NOT set Content-Type — browser sets multipart boundary automatically
     });
     console.log("API CALLED")
-    if (!response.success) {
+    if (!response.ok) {
       const errorBody = await response.json().catch(() => ({}));
       throw new Error(errorBody.message || `Update failed: ${response.status}`);
     }

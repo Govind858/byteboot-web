@@ -3,18 +3,18 @@ import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { Mail, ArrowUpRight, MapPin } from 'lucide-react';
 
 const navLinks = [
-    { label: 'About', href: '#about' },
-    { label: 'Services', href: '#services' },
-    { label: 'Portfolio', href: '#portfolio' },
-    { label: 'Blog', href: '#blog' },
-    { label: 'Contact', href: '#contact' },
+  { label: 'About', href: '#about' },
+  { label: 'Services', href: '#services' },
+  { label: 'Portfolio', href: '#portfolio' },
+  { label: 'Blog', href: '#blog' },
+  { label: 'Contact', href: '#contact' },
 ];
 
 const socials = [
-    { icon: FaGithub, href: 'https://github.com', label: 'GitHub' },
-    { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
-    { icon: FaLinkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
+  { icon: FaGithub, href: 'https://github.com', label: 'GitHub' },
+  { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
+  { icon: FaLinkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+  { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
 ];
 
 const css = `
@@ -297,92 +297,92 @@ const css = `
 `;
 
 const Footer: React.FC = () => {
-    const year = new Date().getFullYear();
+  const year = new Date().getFullYear();
 
-    return (
-        <footer className="footer">
-            <style>{css}</style>
-            <div className="footer-glow" />
+  return (
+    <footer className="footer">
+      <style>{css}</style>
+      <div className="footer-glow" />
 
-            <div className="footer-inner">
-                {/* ── Top grid ── */}
-                <div className="footer-top">
-                    {/* Brand */}
-                    <div className="footer-brand-col">
-                        <a href="#" className="footer-logo">
-                            <span className="footer-logo-dot" />
-                            <span className="footer-logo-text">ByteBoot</span>
-                        </a>
-                        <p className="footer-tagline">
-                            We craft digital products that move fast, scale effortlessly, and leave a lasting impression.
-                        </p>
-                        <a href="mailto:contact@byteboot.com" className="footer-email-cta">
-                            <Mail size={14} />
-                            contact@byteboot.com
-                        </a>
-                    </div>
+      <div className="footer-inner">
+        {/* ── Top grid ── */}
+        <div className="footer-top">
+          {/* Brand */}
+          <div className="footer-brand-col">
+            <a href="#" className="footer-logo">
+              <span className="footer-logo-dot" />
+              <span className="footer-logo-text">ByteBoot</span>
+            </a>
+            <p className="footer-tagline">
+              We craft digital products that move fast, scale effortlessly, and leave a lasting impression.
+            </p>
+            <a href="mailto:contact@byteboot.com" className="footer-email-cta">
+              <Mail size={14} />
+              contact@byteboot.in
+            </a>
+          </div>
 
-                    {/* Navigation */}
-                    <div>
-                        <p className="footer-col-title">Navigation</p>
-                        <ul className="footer-nav-list">
-                            {navLinks.map(({ label, href }) => (
-                                <li key={label}>
-                                    <a href={href}>
-                                        {label}
-                                        <ArrowUpRight size={13} className="arrow-icon" />
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+          {/* Navigation */}
+          <div>
+            <p className="footer-col-title">Navigation</p>
+            <ul className="footer-nav-list">
+              {navLinks.map(({ label, href }) => (
+                <li key={label}>
+                  <a href={href}>
+                    {label}
+                    <ArrowUpRight size={13} className="arrow-icon" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-                    {/* Socials */}
-                    <div>
-                        <p className="footer-col-title">Follow Us</p>
-                        <ul className="footer-social-list">
-                            {socials.map(({ icon: Icon, href, label }) => (
-                                <li key={label}>
-                                    <a href={href} target="_blank" rel="noopener noreferrer">
-                                        <Icon />
-                                        {label}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+          {/* Socials */}
+          <div>
+            <p className="footer-col-title">Follow Us</p>
+            <ul className="footer-social-list">
+              {socials.map(({ icon: Icon, href, label }) => (
+                <li key={label}>
+                  <a href={href} target="_blank" rel="noopener noreferrer">
+                    <Icon />
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-                    {/* Address */}
-                    <div className="footer-address-col">
-                        <p className="footer-col-title">Our Office</p>
-                        <div className="footer-address">
-                            <div className="footer-address-pin">
-                                <MapPin size={14} />
-                                <span className="footer-address-name">ByteBoot Techo Solutions</span>
-                            </div>
-                            <div className="footer-address-lines">
-                                <span>MileStone Building, 2nd Floor</span>
-                                <span>Kadavanthara</span>
-                                <span>Ernakulam, Kerala</span>
-                                <span>India</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* ── Bottom bar ── */}
-                <div className="footer-bottom">
-                    <p className="footer-copy">
-                        © {year} <span>ByteBoot Technologies.</span> All rights reserved.
-                    </p>
-                    <div className="footer-badge">
-                        <span className="footer-badge-dot" />
-                        All systems operational
-                    </div>
-                </div>
+          {/* Address */}
+          <div className="footer-address-col">
+            <p className="footer-col-title">Our Office</p>
+            <div className="footer-address">
+              <div className="footer-address-pin">
+                <MapPin size={14} />
+                <span className="footer-address-name">ByteBoot Techo Solutions</span>
+              </div>
+              <div className="footer-address-lines">
+                <span>MileStone Building, 2nd Floor</span>
+                <span>Kadavanthara</span>
+                <span>Ernakulam, Kerala</span>
+                <span>India</span>
+              </div>
             </div>
-        </footer>
-    );
+          </div>
+        </div>
+
+        {/* ── Bottom bar ── */}
+        <div className="footer-bottom">
+          <p className="footer-copy">
+            © {year} <span>ByteBoot Technologies.</span> All rights reserved.
+          </p>
+          <div className="footer-badge">
+            <span className="footer-badge-dot" />
+            All systems operational
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;
