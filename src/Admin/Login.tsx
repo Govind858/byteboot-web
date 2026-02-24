@@ -229,7 +229,7 @@ export default function Login() {
                                 name="userName"
                                 type="text"
                                 className="lf-input"
-                                placeholder="govind-admin"
+                                placeholder="user name"
                                 value={form.userName}
                                 onChange={handleChange}
                                 autoComplete="username"

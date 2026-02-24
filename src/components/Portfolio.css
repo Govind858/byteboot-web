@@ -432,6 +432,19 @@
     padding: 0 20px;
   }
 
+  .portfolio-header {
+    padding: 0 0 0 6vw;
+    margin-bottom: 2rem;
+  }
+
+  .portfolio-title {
+    font-size: clamp(22px, 6vw, 32px);
+  }
+
+  .portfolio-subtitle {
+    font-size: 0.95rem;
+  }
+
   .portfolio-section {
     --card-width: 290px;
   }
@@ -439,10 +452,28 @@
 
 @media (max-width: 480px) {
   .portfolio-section {
-    --card-width: 270px;
+    padding: 52px 0 60px;
   }
 
-  .card-body {
-    padding: 18px 18px 20px;
+  .portfolio-container {
+    padding: 0 16px;
+  }
+
+  .portfolio-header {
+    padding: 0 0 0 5vw;
+    margin-bottom: 1.5rem;
+  }
+
+  .portfolio-title {
+    font-size: clamp(20px, 7vw, 28px);
+  }
+
+  .portfolio-subtitle {
+    font-size: 0.88rem;
+    max-width: 100%;
+  }
+
+  .portfolio-section {
+    --card-width: 270px;
   }
 }

@@ -1,5 +1,5 @@
-const BASE_URL = "https://backend.byteboot.in";
-// const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "https://backend.byteboot.in";
+const BASE_URL = "http://localhost:3000";
 
 
 // adminApi.js or wherever your API functions are
@@ -101,6 +101,45 @@ export const loginAdmin = async (userName: string, password: string) => {
     return await response.json(); // { message, token, admin }
   } catch (error) {
     console.error("Login failed:", error);
+    throw error;
+  }
+};
+
+export const deleteProduct = async (id: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/product/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => ({}));
+      throw new Error(errorBody.message || `Delete failed: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Delete product ${id} failed:`, error);
+    throw error;
+  }
+};
+
+export const updateProduct = async (id: string, formData: FormData) => {
+  try {
+    const response = await fetch(`${BASE_URL}/product/${id}`, {
+      method: "PUT",
+      body: formData,
+      // Do NOT set Content-Type — browser sets multipart boundary automatically
+    });
+    console.log("API CALLED")
+    if (!response.success) {
+      const errorBody = await response.json().catch(() => ({}));
+      throw new Error(errorBody.message || `Update failed: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Update product ${id} failed:`, error);
     throw error;
   }
 };

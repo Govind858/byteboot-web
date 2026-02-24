@@ -165,23 +165,163 @@
   box-shadow: 0 10px 30px rgba(112, 0, 255, 0.4);
 }
 
-/* Responsive adjustments */
+/* ── Responsive ─────────────────────────────────────────────── */
+
+/* Tablet — 768px */
 @media (max-width: 768px) {
+  .services-section {
+    height: auto;
+    min-height: unset;
+  }
+
+  .services-wrapper {
+    height: auto;
+  }
+
+  .service-header {
+    padding: 2.5rem 6vw 0;
+    max-width: 100%;
+  }
+
   .section-title {
-    font-size: 2.8rem;
+    font-size: clamp(22px, 6vw, 32px);
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
   }
 
   .services-track {
-    gap: 1.8rem;
-    padding: 2rem 5vw;
+    gap: 1.5rem;
+    padding: 2rem 6vw;
   }
 
   .service-card {
-    flex: 0 0 300px;
-    padding: 2rem 1.6rem;
+    flex: 0 0 280px;
+    padding: 1.8rem 1.4rem;
+    border-radius: 14px;
+  }
+
+  .service-icon {
+    margin-bottom: 1.4rem;
+    font-size: 1.6rem;
+  }
+
+  .service-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .service-description {
+    font-size: 0.93rem;
+    line-height: 1.6;
+  }
+
+  /* Modal */
+  .service-modal {
+    padding: 2.2rem 1.8rem;
+    border-radius: 16px;
+  }
+
+  .modal-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .modal-description {
+    font-size: 0.98rem;
+    line-height: 1.75;
+  }
+
+  .modal-close-btn {
+    margin-top: 1.8rem;
+    padding: 0.8rem 2rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile — 480px */
+@media (max-width: 480px) {
+  .service-header {
+    padding: 2rem 5vw 0;
+  }
+
+  .section-title {
+    font-size: clamp(20px, 7vw, 28px);
+  }
+
+  .section-subtitle {
+    font-size: 0.88rem;
+    max-width: 100%;
+  }
+
+  .services-track {
+    gap: 1.25rem;
+    padding: 1.5rem 5vw;
+  }
+
+  .service-card {
+    flex: 0 0 84vw;
+    /* near full-width on small phones */
+    padding: 1.5rem 1.25rem;
+    border-radius: 12px;
+  }
+
+  .service-card:hover {
+    transform: translateY(-8px);
+    /* less dramatic lift on touch */
+  }
+
+  .service-icon {
+    margin-bottom: 1.1rem;
+    font-size: 1.4rem;
+  }
+
+  .service-title {
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .service-description {
+    font-size: 0.88rem;
+    line-height: 1.55;
   }
 
   .service-modal {
-    padding: 2.5rem;
+    padding: 1.8rem 1.4rem;
+    width: 95%;
+    border-radius: 14px;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .modal-description {
+    font-size: 0.92rem;
+  }
+
+  .modal-close-btn {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Very small — 360px */
+@media (max-width: 360px) {
+  .service-card {
+    flex: 0 0 90vw;
+    padding: 1.25rem 1rem;
+  }
+
+  .service-title {
+    font-size: 1.05rem;
+  }
+
+  .service-description {
+    font-size: 0.84rem;
   }
 }

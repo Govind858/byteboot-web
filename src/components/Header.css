@@ -1,0 +1,139 @@
+/* Header.css */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  background: rgba(5, 5, 5, 0);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.45);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.site-header.visible {
+  transform: translateY(0);
+}
+
+.site-header.hidden {
+  transform: translateY(-100%);
+}
+
+/* Container */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0.9rem 1.25rem;
+}
+
+/* Logo area */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.logo-img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+/* ─── Menu Toggle Button ──────────────────────────────────────── */
+.menu-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff; /* The react-icon will inherit this color */
+  z-index: 1100;
+  touch-action: manipulation;
+}
+
+/* Increase tap target size (accessibility + mobile) */
+.menu-toggle-btn::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+}
+
+/* The SVG Icon itself */
+.menu-icon {
+  font-size: 28px; /* Base size */
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Slight scale effect on tap/click for feedback */
+.menu-toggle-btn:active .menu-icon {
+  transform: scale(0.9);
+}
+
+
+/* ─── Responsive Design ────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .header-container {
+    padding: 0.8rem 1.1rem;
+  }
+
+  .logo-img {
+    height: 38px;
+  }
+
+  .brand-name {
+    font-size: 1.28rem;
+  }
+
+  .menu-icon {
+    font-size: 26px; /* Scales down slightly for tablets/large phones */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-img {
+    height: 34px;
+  }
+
+  .brand-name {
+    font-size: 1.18rem;
+  }
+
+  .header-container {
+    padding: 0.7rem 1rem;
+  }
+
+  .menu-icon {
+    font-size: 24px; /* Scales down for smaller phones */
+  }
+}
+
+@media (min-width: 768px) {
+  .header-container {
+    padding: 1.1rem 2.2rem;
+  }
+
+  .logo-img {
+    height: 52px;
+  }
+
+  .brand-name {
+    font-size: 1.65rem;
+  }
+
+  .menu-icon {
+    font-size: 32px; /* Scales up for desktop */
+  }
+}

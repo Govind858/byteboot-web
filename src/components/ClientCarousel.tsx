@@ -1,7 +1,7 @@
 import React from 'react';
 import "./ClientCarousel.css"
-  
-// Import all client logos
+
+// ── Existing logos ─────────────────────────────────────────────────────────────
 import redDefend from '../assets/ClientLogos/Red_Defend.png';
 import emmyFitness from '../assets/ClientLogos/emmy_fitness.jpg';
 import myCvTracker from '../assets/ClientLogos/my_cv_tracker.png';
@@ -11,25 +11,45 @@ import topWorldHr from '../assets/ClientLogos/top_world_hr.jpg';
 import vetcoin from '../assets/ClientLogos/vetcoin.png';
 import winxzone from '../assets/ClientLogos/winxzone.png';
 
-// Client data array
+// ── New logos ──────────────────────────────────────────────────────────────────
+import billsBerry from '../assets/ClientLogos/bills_berry.jpeg';
+import blossamBritish from '../assets/ClientLogos/blossam_british.jpeg';
+import empireFitness from '../assets/ClientLogos/empire_fitsness.jpeg';
+import greatWaters from '../assets/ClientLogos/great_waters.jpeg';
+import medicare from '../assets/ClientLogos/medicare.jpeg';
+import newTokyo from '../assets/ClientLogos/new_tokyo.jpeg';
+import olaCars from '../assets/ClientLogos/ola_cars.jpeg';
+import olaCredits from '../assets/ClientLogos/ola_credits.jpeg';
+import rockViewResort from '../assets/ClientLogos/rock_view_resort.jpeg';
+import techfordInfo from '../assets/ClientLogos/techford_information.jpeg';
+import trinity from '../assets/ClientLogos/trinity.jpeg';
+
+// ── Client data ────────────────────────────────────────────────────────────────
 const clients = [
-  { name: 'Red Defend',     logo: redDefend },
-  { name: 'Emmy Fitness',   logo: emmyFitness },
-  { name: 'My CV Tracker',  logo: myCvTracker },
-  { name: 'Soccer Maniac',  logo: soccerManiac },
+  { name: 'Red Defend', logo: redDefend },
+  { name: 'Emmy Fitness', logo: emmyFitness },
+  { name: 'My CV Tracker', logo: myCvTracker },
+  { name: 'Soccer Maniac', logo: soccerManiac },
   { name: 'Straight Forward', logo: straightForward },
-  { name: 'Top World HR',   logo: topWorldHr },
-  { name: 'Vetcoin',        logo: vetcoin },
-  { name: 'Winxzone',       logo: winxzone },
+  { name: 'Top World HR', logo: topWorldHr },
+  { name: 'Vetcoin', logo: vetcoin },
+  { name: 'Winxzone', logo: winxzone },
+  { name: "Bills Berry", logo: billsBerry },
+  { name: "Blossam British", logo: blossamBritish },
+  { name: "Empire Fitness", logo: empireFitness },
+  { name: "Great Waters", logo: greatWaters },
+  { name: "Medicare", logo: medicare },
+  { name: "New Tokyo", logo: newTokyo },
+  { name: "Ola Cars", logo: olaCars },
+  { name: "Ola Credits", logo: olaCredits },
+  { name: "Rock View Resort", logo: rockViewResort },
+  { name: "Techford Information", logo: techfordInfo },
+  { name: "Trinity", logo: trinity },
 ] as const;
 
 const ClientCarousel: React.FC = () => {
   return (
     <div className="w-full bg-black/10 py-10 md:py-12 lg:py-14 overflow-hidden">
-      {/* 
-        The mask creates a smooth fade-in from left and fade-out to right.
-        Adjust percentages to control fade length (e.g. 10%–15% is common).
-      */}
       <div
         className="overflow-hidden"
         style={{
@@ -62,7 +82,7 @@ const ClientCarousel: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>  
+      </div>
     </div>
   );
 };

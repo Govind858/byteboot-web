@@ -18,6 +18,7 @@ import ReviewScroll from './components/UsersReviews';
 import './App.css';
 import ProductsPage from './Admin/Admin';
 import ClientComponent from './components/ClientComponent';
+import ProtectedRoute from './components/ProtectedRoute';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -69,9 +70,15 @@ function App() {
         } />
         <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path='/product' element={<ProductsPage />} />
-        <Route path="/product-dashboard" element={<ProjectsDashboard />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+        <Route path="/login" element={<Login />} /><Route 
+        path="/product-dashboard" 
+        element={
+          <ProtectedRoute>
+            <ProjectsDashboard />
+          </ProtectedRoute>
+        } 
+      />
+    </Routes>
 
       {/* Dynamic Cursor Styles */}
       <style>{`

@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { createProduct, getProducts } from "../APIs/adminApi";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import { createProduct, getProducts, deleteProduct, updateProduct } from "../APIs/adminApi";
 
-// ── CSS as template literal (same as yours + minor fixes) ─────────────────────
+// ── CSS ───────────────────────────────────────────────────────────────────────
 const globalCSS = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -119,10 +120,10 @@ const globalCSS = `
     background: #111113;
     border: 1px solid #27272a;
     border-radius: 16px;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    position: relative;
   }
 
   .card:hover {
@@ -136,6 +137,7 @@ const globalCSS = `
     height: 190px;
     overflow: hidden;
     background: #18181b;
+    border-radius: 16px 16px 0 0;
   }
 
   .card-image {
@@ -173,6 +175,53 @@ const globalCSS = `
     text-transform: uppercase;
     color: #22d3ee;
   }
+
+  /* ── Card action buttons (Edit / Delete) ── */
+  .card-actions {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.65rem;
+    display: flex;
+    gap: 0.4rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+  }
+
+  .card:hover .card-actions { opacity: 1; }
+
+  .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.15s;
+    backdrop-filter: blur(8px);
+  }
+
+  .btn-icon:active { transform: scale(0.92); }
+
+  .btn-edit {
+    background: rgba(34,211,238,0.18);
+    color: #22d3ee;
+    border: 1px solid rgba(34,211,238,0.3);
+  }
+
+  .btn-edit:hover { background: rgba(34,211,238,0.32); }
+
+  .btn-delete {
+    background: rgba(239,68,68,0.18);
+    color: #f87171;
+    border: 1px solid rgba(239,68,68,0.3);
+  }
+
+  .btn-delete:hover { background: rgba(239,68,68,0.32); }
 
   .card-body {
     padding: 1.25rem;
@@ -287,7 +336,7 @@ const globalCSS = `
     100% { background-position: -200% 0; }
   }
 
-  /* Modal */
+  /* Modal (shared) */
   .overlay {
     position: fixed;
     inset: 0;
@@ -298,6 +347,12 @@ const globalCSS = `
     align-items: center;
     justify-content: center;
     padding: 1rem;
+    animation: fadeIn 0.18s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
   .modal {
@@ -308,6 +363,12 @@ const globalCSS = `
     max-width: 540px;
     max-height: 92vh;
     overflow-y: auto;
+    animation: scaleIn 0.2s ease;
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
   }
 
   .modal-header {
@@ -343,6 +404,8 @@ const globalCSS = `
     padding: 0.65rem 1rem;
     color: white;
     font-size: 0.9rem;
+    font-family: inherit;
+    width: 100%;
   }
 
   .form-input:focus, .form-textarea:focus, .form-select:focus {
@@ -371,9 +434,11 @@ const globalCSS = `
     border: 1px dashed #444;
     border-radius: 10px;
     color: #666;
+    font-size: 0.875rem;
   }
 
   .form-error { color: #f87171; font-size: 0.82rem; }
+  .form-success { color: #4ade80; font-size: 0.82rem; }
 
   .modal-footer {
     padding: 1rem 1.5rem;
@@ -391,7 +456,11 @@ const globalCSS = `
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
   }
+
+  .btn-cancel:hover { background: #3f3f46; }
 
   .btn-submit {
     padding: 0.6rem 1.5rem;
@@ -401,28 +470,127 @@ const globalCSS = `
     border-radius: 10px;
     font-weight: 700;
     cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
   }
 
   .btn-submit:hover { background: #67e8f9; }
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ── Delete confirm dialog ── */
+  .confirm-modal {
+    background: #111113;
+    border: 1px solid #3f3f46;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 380px;
+    padding: 2rem 1.75rem;
+    text-align: center;
+    animation: scaleIn 0.2s ease;
+  }
+
+  .confirm-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .confirm-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .confirm-sub {
+    font-size: 0.875rem;
+    color: #71717a;
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+  }
+
+  .confirm-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .btn-danger {
+    padding: 0.65rem 1.4rem;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+
+  .btn-danger:hover { background: #dc2626; }
+  .btn-danger:disabled { opacity: 0.55; cursor: not-allowed; }
 
   @media (max-width: 640px) {
     .nav-links { display: none; }
     .projects-grid { grid-template-columns: 1fr; }
     .navbar { padding: 0 1rem; }
     .pf-main { padding: 2rem 1rem; }
+    .card-actions { opacity: 1; }  /* always visible on touch */
   }
 `;
 
-// ── Project Card Component ───────────────────────────────────────────────────
-function ProjectCard({ project }: { project: any }) {
+// ── Types ─────────────────────────────────────────────────────────────────────
+interface Project {
+  _id?: string;
+  id?: string;
+  title: string;
+  description?: string;
+  details?: string;
+  detail?: string;
+  category?: string;
+  techStack?: string[];
+  tech?: string[];
+  image?: string;
+}
+
+// ── Project Card ──────────────────────────────────────────────────────────────
+function ProjectCard({
+  project,
+  onEdit,
+  onDelete,
+}: {
+  project: Project;
+  onEdit: (p: Project) => void;
+  onDelete: (id: string, title: string) => void;
+}) {
   const [open, setOpen] = useState(false);
   const details = project.details || project.detail || "";
   const tech = project.techStack || project.tech || [];
+  const id = project._id || project.id || "";
 
   return (
     <div className="card">
       <div className="card-image-wrap">
+        {/* Hover action buttons — inside image-wrap so they're contained by its overflow:hidden border-radius */}
+        <div className="card-actions">
+          <button
+            className="btn-icon btn-edit"
+            title="Edit project"
+            onClick={() => onEdit(project)}
+            type="button"
+          >
+            <FiEdit2 size={15} />
+          </button>
+          <button
+            className="btn-icon btn-delete"
+            title="Delete project"
+            onClick={() => onDelete(id, project.title)}
+            type="button"
+          >
+            <FiTrash2 size={15} />
+          </button>
+        </div>
+
         {project.image ? (
           <img className="card-image" src={project.image} alt={project.title} />
         ) : (
@@ -451,7 +619,6 @@ function ProjectCard({ project }: { project: any }) {
               {open ? "Hide Details" : "View Details"}
               <span className={`toggle-arrow${open ? " open" : ""}`}>▾</span>
             </button>
-
             {open && (
               <div className="details-box">
                 <p className="details-text">{details}</p>
@@ -464,14 +631,14 @@ function ProjectCard({ project }: { project: any }) {
   );
 }
 
-// ── Navbar ───────────────────────────────────────────────────────────────────
+// ── Navbar ────────────────────────────────────────────────────────────────────
 function Navbar({ onAddClick }: { onAddClick: () => void }) {
   return (
     <nav className="navbar">
       <a className="nav-brand" href="#">
         <span className="nav-dot" />
         <span className="nav-brand-text">ByteBoot</span>
-      </a>  
+      </a>
       <button className="btn-add" onClick={onAddClick}>
         + Add Project
       </button>
@@ -479,7 +646,7 @@ function Navbar({ onAddClick }: { onAddClick: () => void }) {
   );
 }
 
-// ── Skeleton ─────────────────────────────────────────────────────────────────
+// ── Skeleton ──────────────────────────────────────────────────────────────────
 function SkeletonCard() {
   return (
     <div className="skeleton-card">
@@ -495,42 +662,71 @@ function SkeletonCard() {
   );
 }
 
-// ── Add Project Modal ────────────────────────────────────────────────────────
-function AddProjectModal({
+// ── Delete Confirm Dialog ─────────────────────────────────────────────────────
+function DeleteConfirmModal({
+  projectTitle,
+  onConfirm,
+  onCancel,
+  deleting,
+}: {
+  projectTitle: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+  deleting: boolean;
+}) {
+  return (
+    <div className="overlay" onClick={onCancel}>
+      <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="confirm-icon">⚠️</div>
+        <div className="confirm-title">Delete Project?</div>
+        <div className="confirm-sub">
+          Are you sure you want to delete <strong style={{ color: "#fff" }}>"{projectTitle}"</strong>?
+          <br />This action cannot be undone.
+        </div>
+        <div className="confirm-actions">
+          <button className="btn-cancel" onClick={onCancel} disabled={deleting}>
+            Cancel
+          </button>
+          <button className="btn-danger" onClick={onConfirm} disabled={deleting}>
+            {deleting ? "Deleting…" : "Yes, Delete"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Add / Edit Project Modal ──────────────────────────────────────────────────
+function ProjectFormModal({
+  mode,
+  initial,
   onClose,
   onSuccess,
 }: {
+  mode: "add" | "edit";
+  initial?: Project;
   onClose: () => void;
-  onSuccess: (newProject: any) => void;
+  onSuccess: (project: Project, isEdit: boolean) => void;
 }) {
   const [form, setForm] = useState({
-    title: "",
-    description: "",
-    details: "",
-    category: "fullstack",
-    techStack: "",
+    title: initial?.title ?? "",
+    description: initial?.description ?? "",
+    details: initial?.details || initial?.detail || "",
+    category: initial?.category ?? "fullstack",
+    techStack: (initial?.techStack || initial?.tech || []).join(", "),
     image: null as File | null,
   });
 
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(initial?.image ?? null);
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      setErrorMsg("Please select an image file");
-      return;
-    }
-    if (file.size > 5_000_000) {
-      setErrorMsg("Image too large (max 5 MB)");
-      return;
-    }
-
+    if (!file.type.startsWith("image/")) { setErrorMsg("Please select an image file"); return; }
+    if (file.size > 5_000_000) { setErrorMsg("Image too large (max 5 MB)"); return; }
     setForm((p) => ({ ...p, image: file }));
     const reader = new FileReader();
     reader.onload = () => setPreview(reader.result as string);
@@ -547,49 +743,65 @@ function AddProjectModal({
     }
 
     setSubmitting(true);
-
     try {
-      const techArray = form.techStack
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
+      const techArray = form.techStack.split(",").map((s) => s.trim()).filter(Boolean);
 
       const fd = new FormData();
       fd.append("title", form.title.trim());
       fd.append("description", form.description.trim());
       fd.append("details", form.details.trim());
       fd.append("category", form.category);
-      techArray.forEach(tech => {
-  fd.append("techStack", tech);   // repeat same key multiple times
-});
+      techArray.forEach((tech) => fd.append("techStack", tech));
       if (form.image) fd.append("image", form.image);
 
-      const res = await createProduct(fd);
-
-      if (res?.success && res?.product) {
-        onSuccess(res.product);
-        onClose();
+      let res: any;
+      if (mode === "add") {
+        res = await createProduct(fd);
+        if (res?.success && res?.product) {
+          onSuccess(res.product, false);
+          onClose();
+        } else {
+          throw new Error(res?.message || "Creation failed");
+        }
       } else {
-        throw new Error(res?.message || "Creation failed");
+        const id = initial?._id || initial?.id || "";
+        res = await updateProduct(id, fd);
+        // Merge the returned product (or fall back to our form values)
+        const updated: Project = res?.product ?? {
+          ...initial,
+          title: form.title.trim(),
+          description: form.description.trim(),
+          details: form.details.trim(),
+          category: form.category,
+          techStack: techArray,
+          image: preview ?? initial?.image,
+        };
+        onSuccess(updated, true);
+        onClose();
       }
     } catch (err: any) {
-      setErrorMsg(err.message || "Could not add project");
+      setErrorMsg(err.message || `Could not ${mode === "add" ? "add" : "update"} project`);
     } finally {
       setSubmitting(false);
     }
   };
 
+  const modalTitle = mode === "add" ? "Add New Project" : "Edit Project";
+  const submitLabel = mode === "add"
+    ? (submitting ? "Adding…" : "Add Project")
+    : (submitting ? "Saving…" : "Save Changes");
+
   return (
     <div className="overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2 className="modal-title">Add New Project</h2>
+          <h2 className="modal-title">{modalTitle}</h2>
           <button className="modal-close" onClick={onClose}>×</button>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="modal-body">
-            {errorMsg && <div className="form-error">{errorMsg}</div>}
+            {errorMsg && <div className="form-error">⚠ {errorMsg}</div>}
 
             <div className="form-group">
               <label className="form-label">Title *</label>
@@ -646,7 +858,9 @@ function AddProjectModal({
             </div>
 
             <div className="form-group">
-              <label className="form-label">Image</label>
+              <label className="form-label">
+                Image{mode === "edit" ? " (leave empty to keep current)" : ""}
+              </label>
               {preview ? (
                 <img src={preview} alt="preview" className="image-preview" />
               ) : (
@@ -670,9 +884,10 @@ function AddProjectModal({
                   border: "1px solid #444",
                   borderRadius: "8px",
                   cursor: "pointer",
+                  fontFamily: "inherit",
                 }}
               >
-                Select Image
+                {preview ? "Change Image" : "Select Image"}
               </button>
             </div>
           </div>
@@ -682,7 +897,7 @@ function AddProjectModal({
               Cancel
             </button>
             <button type="submit" className="btn-submit" disabled={submitting}>
-              {submitting ? "Adding..." : "Add Project"}
+              {submitLabel}
             </button>
           </div>
         </form>
@@ -691,26 +906,27 @@ function AddProjectModal({
   );
 }
 
-// ── Main Dashboard ───────────────────────────────────────────────────────────
+// ── Main Dashboard ────────────────────────────────────────────────────────────
 export default function ProjectsDashboard() {
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showAddModal, setShowAddModal] = useState(false);
 
-  // Inject global styles once
+  // Modal state
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editTarget, setEditTarget] = useState<Project | null>(null);
+
+  // Delete confirm state
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  // Inject styles once
   useEffect(() => {
     if (document.getElementById("dashboard-global-styles")) return;
-
     const style = document.createElement("style");
     style.id = "dashboard-global-styles";
     style.textContent = globalCSS;
     document.head.appendChild(style);
-
-    return () => {
-      // Optional: cleanup on unmount (usually not needed for global styles)
-      // style.remove();
-    };
   }, []);
 
   const loadProjects = async () => {
@@ -727,12 +943,33 @@ export default function ProjectsDashboard() {
     }
   };
 
-  useEffect(() => {
-    loadProjects();
-  }, []);
+  useEffect(() => { loadProjects(); }, []);
 
-  const handleNewProject = (newProj: any) => {
-    setProjects((prev) => [newProj, ...prev]);
+  // ── Handlers ──────────────────────────────────────────────────────────────
+  const handleFormSuccess = (project: Project, isEdit: boolean) => {
+    if (isEdit) {
+      setProjects((prev) =>
+        prev.map((p) => (p._id === project._id || p.id === project.id) ? project : p)
+      );
+    } else {
+      setProjects((prev) => [project, ...prev]);
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      await deleteProduct(deleteTarget.id);
+      setProjects((prev) =>
+        prev.filter((p) => (p._id || p.id) !== deleteTarget.id)
+      );
+      setDeleteTarget(null);
+    } catch (err: any) {
+      alert(`Delete failed: ${err.message}`);
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (
@@ -744,10 +981,10 @@ export default function ProjectsDashboard() {
           <h1 className="page-title">Projects</h1>
           <p className="page-sub">
             {loading
-              ? "Loading..."
+              ? "Loading…"
               : error
-              ? "Error loading projects"
-              : `${projects.length} project${projects.length !== 1 ? "s" : ""}`}
+                ? "Error loading projects"
+                : `${projects.length} project${projects.length !== 1 ? "s" : ""}`}
           </p>
         </div>
 
@@ -772,6 +1009,7 @@ export default function ProjectsDashboard() {
                 borderRadius: "8px",
                 fontWeight: 600,
                 cursor: "pointer",
+                fontFamily: "inherit",
               }}
             >
               Retry
@@ -781,17 +1019,44 @@ export default function ProjectsDashboard() {
 
         {!loading && !error && (
           <div className="projects-grid">
-            {projects.map((p) => (
-              <ProjectCard key={p._id || p.id || Math.random()} project={p} />
+            {projects.map((p, i) => (
+              <ProjectCard
+                key={p._id || p.id || `card-${i}`}
+                project={p}
+                onEdit={(proj) => setEditTarget(proj)}
+                onDelete={(id, title) => setDeleteTarget({ id, title })}
+              />
             ))}
           </div>
         )}
       </main>
 
+      {/* Add Modal */}
       {showAddModal && (
-        <AddProjectModal
+        <ProjectFormModal
+          mode="add"
           onClose={() => setShowAddModal(false)}
-          onSuccess={handleNewProject}
+          onSuccess={handleFormSuccess}
+        />
+      )}
+
+      {/* Edit Modal */}
+      {editTarget && (
+        <ProjectFormModal
+          mode="edit"
+          initial={editTarget}
+          onClose={() => setEditTarget(null)}
+          onSuccess={handleFormSuccess}
+        />
+      )}
+
+      {/* Delete Confirm Dialog */}
+      {deleteTarget && (
+        <DeleteConfirmModal
+          projectTitle={deleteTarget.title}
+          onConfirm={handleDeleteConfirm}
+          onCancel={() => setDeleteTarget(null)}
+          deleting={deleting}
         />
       )}
     </>
