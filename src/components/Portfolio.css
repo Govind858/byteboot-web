@@ -37,12 +37,10 @@
   padding: 0 32px;
 }
 
-/* ── Header — same 8vw left as Services & ClientComponent ────── */
-/* Break out of the constrained container so left edge == 8vw    */
+/* ── Header ─────────────────────────────────────────────────── */
 .portfolio-header {
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  /* undo centering */
   padding: 0 0 0 8vw;
   max-width: none;
   margin-bottom: 2.5rem;
@@ -74,7 +72,6 @@
   margin: 0;
 }
 
-
 /* ── Scroll container ───────────────────────────────────────── */
 .portfolio-scroll-container {
   position: relative;
@@ -103,27 +100,6 @@
   scroll-snap-type: none;
 }
 
-/* ── Edge fade overlays ─────────────────────────────────────── */
-.scroll-fade-left,
-.scroll-fade-right {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.scroll-fade-left {
-  left: 0;
-  background: linear-gradient(to right, #0a0a0a, transparent);
-}
-
-.scroll-fade-right {
-  right: 0;
-  background: linear-gradient(to left, #0a0a0a, transparent);
-}
-
 /* ── Card ───────────────────────────────────────────────────── */
 .project-card {
   flex: 0 0 var(--card-width);
@@ -150,7 +126,6 @@
     opacity: 0;
     transform: translateY(28px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -186,17 +161,6 @@
 .project-card:hover .card-img {
   transform: scale(1.07);
   opacity: 0.9;
-}
-
-/* bottom gradient fade from card bg color */
-.card-img-fade {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 90px;
-  background: linear-gradient(to top, rgba(0, 18, 20, 0.95), transparent);
-  pointer-events: none;
 }
 
 /* ── Category badge ─────────────────────────────────────────── */
@@ -384,13 +348,8 @@
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-
-  100% {
-    background-position: -200% 0;
-  }
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 /* ── Error / Empty states ───────────────────────────────────── */
@@ -427,24 +386,19 @@
   .portfolio-section {
     padding: 72px 0 80px;
   }
-
   .portfolio-container {
     padding: 0 20px;
   }
-
   .portfolio-header {
     padding: 0 0 0 6vw;
     margin-bottom: 2rem;
   }
-
   .portfolio-title {
     font-size: clamp(22px, 6vw, 32px);
   }
-
   .portfolio-subtitle {
     font-size: 0.95rem;
   }
-
   .portfolio-section {
     --card-width: 290px;
   }
@@ -454,25 +408,20 @@
   .portfolio-section {
     padding: 52px 0 60px;
   }
-
   .portfolio-container {
     padding: 0 16px;
   }
-
   .portfolio-header {
     padding: 0 0 0 5vw;
     margin-bottom: 1.5rem;
   }
-
   .portfolio-title {
     font-size: clamp(20px, 7vw, 28px);
   }
-
   .portfolio-subtitle {
     font-size: 0.88rem;
     max-width: 100%;
   }
-
   .portfolio-section {
     --card-width: 270px;
   }

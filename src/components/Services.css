@@ -13,7 +13,7 @@
 }
 
 .services-section {
-  height: 70%;
+  min-height: 100vh;
   background: var(--bg-dark);
   position: relative;
   overflow: hidden;

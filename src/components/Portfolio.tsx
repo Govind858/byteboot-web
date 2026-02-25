@@ -6,7 +6,6 @@ import { getProducts } from '../APIs/adminApi';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import './Portfolio.css';
 
-
 interface Project {
   id: string;
   title: string;
@@ -26,9 +25,6 @@ const Portfolio: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Smooth scroll animation frame
-  const scrollAnimationFrame = useRef<number | null>(null);
 
   // Fetch projects
   useEffect(() => {
@@ -63,12 +59,7 @@ const Portfolio: React.FC = () => {
     };
 
     fetchData();
-    return () => {
-      isMounted = false;
-      if (scrollAnimationFrame.current) {
-        cancelAnimationFrame(scrollAnimationFrame.current);
-      }
-    };
+    return () => { isMounted = false; };
   }, []);
 
   // Smooth wheel scrolling with momentum
@@ -77,6 +68,7 @@ const Portfolio: React.FC = () => {
     if (!track) return;
 
     let wheelTimeout: number | undefined;
+
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
 
@@ -138,7 +130,7 @@ const Portfolio: React.FC = () => {
     <section id="portfolio" className="portfolio-section">
       <div className="portfolio-container">
 
-        {/* ── Header ── */}
+        {/* Header */}
         <div ref={titleRef} className="portfolio-header">
           <h2 className="portfolio-title">Our <span>Products</span></h2>
           <p className="portfolio-subtitle">
@@ -146,7 +138,7 @@ const Portfolio: React.FC = () => {
           </p>
         </div>
 
-        {/* ── Loading ── */}
+        {/* Loading */}
         {loading && (
           <div className="portfolio-loading">
             <div className="portfolio-loading-track">
@@ -157,7 +149,7 @@ const Portfolio: React.FC = () => {
           </div>
         )}
 
-        {/* ── Error ── */}
+        {/* Error */}
         {error && (
           <div className="portfolio-error">
             <p>{error}</p>
@@ -167,14 +159,14 @@ const Portfolio: React.FC = () => {
           </div>
         )}
 
-        {/* ── Empty ── */}
+        {/* Empty */}
         {!loading && !error && projects.length === 0 && (
           <div className="portfolio-empty">
             <p>No products available at the moment.</p>
           </div>
         )}
 
-        {/* ── Cards ── */}
+        {/* Cards */}
         {!loading && !error && projects.length > 0 && (
           <div className="portfolio-scroll-container">
             <div
@@ -207,12 +199,9 @@ const Portfolio: React.FC = () => {
                         draggable="false"
                       />
                     )}
-                    <div className="card-img-fade" />
 
-                    {/* Category badge */}
                     <span className="card-badge">{project.category}</span>
 
-                    {/* Arrow button — visible on hover */}
                     <span className="card-arrow-btn" aria-hidden="true">
                       <ArrowUpRight size={14} strokeWidth={2} />
                     </span>
@@ -231,7 +220,6 @@ const Portfolio: React.FC = () => {
 
                     <p className="card-desc">{project.description}</p>
 
-                    {/* Tech tags */}
                     {project.tech.length > 0 && (
                       <div className="card-tags">
                         {project.tech.slice(0, 3).map((t, idx) => (
@@ -260,10 +248,6 @@ const Portfolio: React.FC = () => {
                 </article>
               ))}
             </div>
-
-            {/* Edge fades */}
-            <div className="scroll-fade-left" />
-            <div className="scroll-fade-right" />
           </div>
         )}
       </div>

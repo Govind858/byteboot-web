@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { Mail, ArrowUpRight, MapPin } from 'lucide-react';
+import Logo  from "../assets/byteboot.png"
 
 const navLinks = [
   { label: 'About', href: '#about' },

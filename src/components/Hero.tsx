@@ -24,7 +24,7 @@ const Hero: React.FC = () => {
             });
         }
 
-        // Split Text Animation (Simulated without SplitText plugin)
+        // Split Text Animation
         const titleWords = titleRef.current?.querySelectorAll('.word');
         const subtitle = subtitleRef.current;
         const btns = btnRef.current?.children;
@@ -139,7 +139,7 @@ const Hero: React.FC = () => {
                     display: 'flex',
                     flexWrap: 'wrap',
                     justifyContent: 'center',
-                    gap: '0.3em' // space between words
+                    gap: '0.3em'
                 }}>
                     <span className="word" style={{ display: 'inline-block' }}>Code</span>
                     <span className="word" style={{ display: 'inline-block', color: 'transparent', WebkitTextStroke: '1px #fff' }}>Beyond</span>

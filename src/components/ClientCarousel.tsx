@@ -72,7 +72,8 @@ const ClientCarousel: React.FC = () => {
                 <img
                   src={client.logo}
                   alt={`${client.name} logo`}
-                  className="h-8 md:h-9 w-auto max-w-[90px] md:max-w-[110px] object-contain filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 ease-out transform group-hover:scale-110"
+                  // Removed grayscale and opacity classes below
+                  className="h-8 md:h-9 w-auto max-w-[90px] md:max-w-[110px] object-contain transition-all duration-300 ease-out transform group-hover:scale-110"
                   loading="lazy"
                 />
               </div>
