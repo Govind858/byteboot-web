@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import './Contact.css';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+
+const EASE_OUT = [0.25, 0.46, 0.45, 0.94] as const;
 
 const Contact: React.FC = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        message: '',
-    });
-    const headerRef = useScrollReveal<HTMLDivElement>({ delay: 0 });
-    const gridRef = useScrollReveal<HTMLDivElement>({ delay: 0.12, distance: 50 });
+    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,22 +14,26 @@ const Contact: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // In real app → send to backend / email service
         alert(`Thank you, ${formData.name}! We'll get back to you soon.`);
         setFormData({ name: '', email: '', message: '' });
     };
 
     return (
         <section id="contact" className="contact-section">
-            {/* Background glows */}
             <div className="contact-glow-bg">
                 <div className="glow-orb glow-cyan"></div>
                 <div className="glow-orb glow-purple"></div>
             </div>
 
             <div className="contact-container">
-                {/* Header */}
-                <div ref={headerRef} className="contact-header">
+                {/* Header — fade up */}
+                <motion.div
+                    className="contact-header"
+                    initial={{ opacity: 0, y: 36 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.65, ease: 'easeOut' as const }}
+                    viewport={{ once: true, amount: 0.5 }}
+                >
                     <h2 className="contact-title">
                         Let's <span className="gradient-text">Collaborate</span>
                     </h2>
@@ -41,113 +41,66 @@ const Contact: React.FC = () => {
                     <p className="contact-subtitle">
                         Got an idea? A project? Or just want to say hi? Drop us a message — we're excited to hear from you.
                     </p>
-                </div>
+                </motion.div>
 
-                <div ref={gridRef} className="contact-grid">
-                    {/* ─── Left: Contact Form ─── */}
-                    <div className="contact-form-card">
+                {/* Grid — form from left, info from right */}
+                <div className="contact-grid">
+                    {/* Left: Contact Form */}
+                    <motion.div
+                        className="contact-form-card"
+                        initial={{ opacity: 0, x: -60 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.75, ease: EASE_OUT }}
+                        viewport={{ once: true, amount: 0.15 }}
+                    >
                         <h3 className="form-title">Get in Touch</h3>
-
                         <form onSubmit={handleSubmit} className="contact-form">
-                            {/* Name + Email row */}
                             <div className="form-row">
-                                {/* Name */}
                                 <div className="input-group">
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        id="name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        placeholder=" "
-                                        required
-                                        className="form-input"
-                                    />
-                                    <label htmlFor="name" className="input-label">
-                                        Your Name
-                                    </label>
+                                    <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} placeholder=" " required className="form-input" />
+                                    <label htmlFor="name" className="input-label">Your Name</label>
                                 </div>
-
-                                {/* Email */}
                                 <div className="input-group">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        placeholder=" "
-                                        required
-                                        className="form-input"
-                                    />
-                                    <label htmlFor="email" className="input-label">
-                                        Email Address
-                                    </label>
+                                    <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} placeholder=" " required className="form-input" />
+                                    <label htmlFor="email" className="input-label">Email Address</label>
                                 </div>
                             </div>
-
-                            {/* Message */}
                             <div className="input-group">
-                                <textarea
-                                    name="message"
-                                    id="message"
-                                    rows={6}
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    placeholder=" "
-                                    required
-                                    className="form-input resize-none"
-                                />
-                                <label htmlFor="message" className="input-label">
-                                    Your Message
-                                </label>
+                                <textarea name="message" id="message" rows={6} value={formData.message} onChange={handleChange} placeholder=" " required className="form-input resize-none" />
+                                <label htmlFor="message" className="input-label">Your Message</label>
                             </div>
-
-                            {/* Submit */}
-                            <button
+                            <motion.button
                                 type="submit"
                                 className="submit-btn group"
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
                             >
                                 <Send size={18} />
                                 Send Message
-                            </button>
+                            </motion.button>
                         </form>
-                    </div>
+                    </motion.div>
 
-                    {/* ─── Right: Info + Map ─── */}
-                    <div className="info-map-column">
-                        {/* Quick contact cards */}
+                    {/* Right: Info + Map */}
+                    <motion.div
+                        className="info-map-column"
+                        initial={{ opacity: 0, x: 60 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.75, delay: 0.1, ease: EASE_OUT }}
+                        viewport={{ once: true, amount: 0.15 }}
+                    >
                         <div className="quick-contact-grid">
-                            {/* Phone */}
-                            <a
-                                href="tel:09141109785"
-                                className="contact-card"
-                            >
-                                <div className="icon-wrapper cyan-icon">
-                                    <Phone size={26} />
-                                </div>
+                            <a href="tel:09141109785" className="contact-card">
+                                <div className="icon-wrapper cyan-icon"><Phone size={26} /></div>
                                 <h4>Phone</h4>
-                                <span>
-                                    +91 8075 119 654
-                                </span>
+                                <span>+91 8075 119 654</span>
                             </a>
-
-                            {/* Email */}
-                            <a
-                                href="mailto:contact@byteboot.com"
-                                className="contact-card purple-card"
-                            >
-                                <div className="icon-wrapper purple-icon">
-                                    <Mail size={26} />
-                                </div>
+                            <a href="mailto:contact@byteboot.com" className="contact-card purple-card">
+                                <div className="icon-wrapper purple-icon"><Mail size={26} /></div>
                                 <h4>Email</h4>
-                                <span>
-                                    contact@byteboot.com
-                                </span>
+                                <span>contact@byteboot.com</span>
                             </a>
                         </div>
-
-                        {/* Map */}
                         <div className="map-container">
                             <iframe
                                 title="ByteBoot Location"
@@ -157,13 +110,12 @@ const Contact: React.FC = () => {
                                 loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
                             ></iframe>
-
                             <div className="map-badge">
                                 <MapPin size={18} className="icon-red" />
                                 <span>ByteBoot HQ</span>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>

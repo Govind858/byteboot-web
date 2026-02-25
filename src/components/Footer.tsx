@@ -67,28 +67,26 @@ const css = `
   /* Brand column */
   .footer-brand-col {}
 
-  .footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    margin-bottom: 1.25rem;
-    text-decoration: none;
-  }
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1.25rem;
+  text-decoration: none;
+}
 
-  .footer-logo-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: #22d3ee;
-    box-shadow: 0 0 12px #22d3ee;
-    flex-shrink: 0;
-  }
+.footer-logo-img {
+  width: 28px;   /* adjust size if needed */
+  height: 28px;
+  object-fit: contain;
+}
 
-  .footer-logo-text {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.03em;
-  }
+.footer-logo-text {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+}
 
   .footer-tagline {
     color: #52525b;
@@ -310,10 +308,10 @@ const Footer: React.FC = () => {
         <div className="footer-top">
           {/* Brand */}
           <div className="footer-brand-col">
-            <a href="#" className="footer-logo">
-              <span className="footer-logo-dot" />
-              <span className="footer-logo-text">ByteBoot</span>
-            </a>
+          <a href="#" className="footer-logo">
+  <img src={Logo} alt="ByteBoot Logo" className="footer-logo-img" />
+  <span className="footer-logo-text">ByteBoot</span>
+  </a>
             <p className="footer-tagline">
               We craft digital products that move fast, scale effortlessly, and leave a lasting impression.
             </p>

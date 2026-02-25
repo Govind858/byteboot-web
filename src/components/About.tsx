@@ -1,13 +1,38 @@
 // About.tsx
+import { motion } from 'framer-motion';
 import "./About.css";
 import { Bot, Palette, Cloud } from 'lucide-react';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+
+const EASE_OUT = [0.25, 0.46, 0.45, 0.94] as const;
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, delay: i * 0.15, ease: EASE_OUT },
+  }),
+};
+
+const popIn = {
+  hidden: { opacity: 0, scale: 0.78 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    scale: 1,
+    transition: { type: 'spring' as const, stiffness: 300, damping: 22, delay: i * 0.18 },
+  }),
+};
+
+const buildItemVariant = {
+  hidden: { opacity: 0, x: -24 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.55, delay: 0.3 + i * 0.12, ease: 'easeOut' as const },
+  }),
+};
 
 const About = () => {
-  const headerRef = useScrollReveal<HTMLElement>({ delay: 0 });
-  const cardsRef = useScrollReveal<HTMLDivElement>({ delay: 0.1, distance: 50 });
-  const taglineRef = useScrollReveal<HTMLDivElement>({ delay: 0.15 });
-
   return (
     <section id="about" className="about-section">
       <div className="background-grid"></div>
@@ -15,27 +40,30 @@ const About = () => {
       <div className="orb orb-bottom-right"></div>
 
       <div className="container">
-        <header ref={headerRef} className="section-header">
+        {/* Heading — fade up */}
+        <motion.header
+          className="section-header"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.4 }}
+        >
           <h2>
             <span className="gradient-text">Who We Are</span>
           </h2>
           <div className="header-line"></div>
-        </header>
+        </motion.header>
 
-        <div ref={cardsRef} className="cards-grid">
-          {/* Card 1 */}
-          <div className="feature-card cyan-card">
+        {/* Cards — pop / spring scale, staggered */}
+        <motion.div
+          className="cards-grid"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          <motion.div className="feature-card cyan-card" custom={0} variants={popIn}>
             <div className="card-icon cyan-icon">
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="13 10 3 10 3 3" />
                 <path d="M4 14h7v7l9-11h-7z" />
               </svg>
@@ -46,21 +74,11 @@ const About = () => {
               products. We combine cutting-edge engineering with relentless
               execution to ship software that scales from day one.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Card 2 */}
-          <div className="feature-card purple-card">
+          <motion.div className="feature-card purple-card" custom={1} variants={popIn}>
             <div className="card-icon purple-icon">
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="5" />
                 <line x1="12" y1="1" x2="12" y2="3" />
                 <line x1="12" y1="21" x2="12" y2="23" />
@@ -78,39 +96,45 @@ const About = () => {
               We blend world-class design with robust architecture to create
               experiences that users love and systems that never break.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Full-width card */}
-          <div className="full-width-card">
+          <motion.div className="full-width-card" custom={2} variants={popIn}>
             <h3 className="full-card-title">What We Build</h3>
-            <div className="build-items">
-              <div className="build-item">
-                <Bot className="build-icon" size={32} strokeWidth={1.8} />
-                <h4>AI-Native Platforms</h4>
-                <p>Machine learning, LLM integration, intelligent automation</p>
-              </div>
+            <motion.div
+              className="build-items"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+            >
+              {[
+                { icon: <Bot className="build-icon" size={32} strokeWidth={1.8} />, title: 'AI-Native Platforms', desc: 'Machine learning, LLM integration, intelligent automation' },
+                { icon: <Palette className="build-icon" size={32} strokeWidth={1.8} />, title: 'Immersive Experiences', desc: '3D web, real-time interactions, stunning interfaces' },
+                { icon: <Cloud className="build-icon" size={32} strokeWidth={1.8} />, title: 'Enterprise Cloud', desc: 'Scalable infrastructure, microservices, DevOps excellence' },
+              ].map((item, i) => (
+                <motion.div key={item.title} className="build-item" custom={i} variants={buildItemVariant}>
+                  {item.icon}
+                  <h4>{item.title}</h4>
+                  <p>{item.desc}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
-              <div className="build-item">
-                <Palette className="build-icon" size={32} strokeWidth={1.8} />
-                <h4>Immersive Experiences</h4>
-                <p>3D web, real-time interactions, stunning interfaces</p>
-              </div>
-
-              <div className="build-item">
-                <Cloud className="build-icon" size={32} strokeWidth={1.8} />
-                <h4>Enterprise Cloud</h4>
-                <p>Scalable infrastructure, microservices, DevOps excellence</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div ref={taglineRef} className="tagline-wrapper">
+        {/* Tagline — fade up last */}
+        <motion.div
+          className="tagline-wrapper"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          custom={0.5}
+          viewport={{ once: true, amount: 0.6 }}
+        >
           <p className="tagline">
             We don't just build software. We build{" "}
             <span>foundations for tomorrow's breakthroughs</span>.
           </p>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
