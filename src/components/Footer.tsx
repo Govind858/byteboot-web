@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { Mail, ArrowUpRight, MapPin } from 'lucide-react';
-import Logo  from "../assets/byteboot.png"
+import Logo from "../assets/byteboot.png"
 
 const navLinks = [
   { label: 'About', href: '#about' },
@@ -276,22 +276,47 @@ const css = `
   @media (max-width: 900px) {
     .footer-top {
       grid-template-columns: 1fr 1fr;
-      gap: 2.5rem;
+      gap: 2rem;
     }
     .footer-brand-col { grid-column: span 2; }
+    .footer-tagline { max-width: 100%; }
+  }
+
+  @media (max-width: 768px) {
+    .footer-inner { padding: 3.5rem 1.25rem 0; }
+    .footer-top { padding-bottom: 2.5rem; gap: 2rem; }
+    .footer-email-cta {
+      font-size: 0.8rem;
+      padding: 0.5rem 0.9rem;
+      word-break: break-all;
+    }
+    .footer-tagline { font-size: 0.85rem; }
+    .footer-col-title { margin-bottom: 0.9rem; }
+    .footer-nav-list, .footer-social-list { gap: 0.6rem; }
+    .footer-nav-list a, .footer-social-list a { font-size: 0.88rem; }
   }
 
   @media (max-width: 540px) {
+    .footer-inner { padding: 3rem 1rem 0; }
     .footer-top {
       grid-template-columns: 1fr;
+      gap: 2rem;
     }
     .footer-brand-col { grid-column: span 1; }
-    .footer-inner { padding: 4rem 1.25rem 0; }
+    /* Social icons: 2-column grid on small phones */
+    .footer-social-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem 1.25rem;
+    }
     .footer-bottom {
       flex-direction: column;
       align-items: flex-start;
-      gap: 0.75rem;
+      gap: 0.6rem;
+      padding-bottom: 2rem;
     }
+    .footer-copy { font-size: 0.78rem; }
+    .footer-badge { font-size: 0.75rem; }
   }
 `;
 
@@ -308,10 +333,10 @@ const Footer: React.FC = () => {
         <div className="footer-top">
           {/* Brand */}
           <div className="footer-brand-col">
-          <a href="#" className="footer-logo">
-  <img src={Logo} alt="ByteBoot Logo" className="footer-logo-img" />
-  <span className="footer-logo-text">ByteBoot</span>
-  </a>
+            <a href="#" className="footer-logo">
+              <img src={Logo} alt="ByteBoot Logo" className="footer-logo-img" />
+              <span className="footer-logo-text">ByteBoot</span>
+            </a>
             <p className="footer-tagline">
               We craft digital products that move fast, scale effortlessly, and leave a lasting impression.
             </p>

@@ -19,43 +19,65 @@ const Services: React.FC = () => {
     const track = trackRef.current;
     if (!section || !track) return;
 
-    const cards = track.querySelectorAll('.service-card');
+    const mm = gsap.matchMedia();
 
-    const totalWidth = track.scrollWidth;
-    const screenWidth = window.innerWidth;
-    const scrollDistance = totalWidth - screenWidth;
+    mm.add("(min-width: 769px)", () => {
+      // ── Desktop: horizontal pin scroll ───────────────────────────────────────
+      const cards = track.querySelectorAll('.service-card');
+      const totalWidth = track.scrollWidth;
+      const screenWidth = window.innerWidth;
+      const scrollDistance = totalWidth - screenWidth;
 
-    gsap.to(track, {
-      x: -scrollDistance,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: () => `+=${scrollDistance + 100}`, // little extra breathing room
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-      },
-    });
-
-    gsap.fromTo(
-      cards,
-      { y: 60, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.9,
-        stagger: 0.2,
+      gsap.to(track, {
+        x: -scrollDistance,
+        ease: 'none',
         scrollTrigger: {
           trigger: section,
-          start: 'top 85%',
+          start: 'top top',
+          end: () => `+=${scrollDistance + 100}`,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
         },
-      }
-    );
+      });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
+      gsap.fromTo(
+        cards,
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 85%',
+          },
+        }
+      );
+    });
+
+    mm.add("(max-width: 768px)", () => {
+      // ── Mobile: simple vertical entrance animations (no pin) ──────────────────
+      const cards = track.querySelectorAll('.service-card');
+
+      gsap.fromTo(
+        cards,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 85%',
+          },
+        }
+      );
+    });
+
+    return () => mm.revert(); // Clean up everything!
   }, []);
 
   const renderIcon = (iconName: string) => {
@@ -78,9 +100,7 @@ const Services: React.FC = () => {
               onClick={() => setSelectedService(service)}
             >
               <div className="service-icon">{renderIcon(service.icon)}</div>
-
               <h3 className="service-title">{service.title}</h3>
-
               <p className="service-description">{service.description}</p>
             </div>
           ))}
@@ -91,9 +111,7 @@ const Services: React.FC = () => {
         <div className="service-modal-overlay" onClick={() => setSelectedService(null)}>
           <div className="service-modal" onClick={(e) => e.stopPropagation()}>
             <h3 className="modal-title">{selectedService.title}</h3>
-
             <p className="modal-description">{selectedService.details}</p>
-
             <button className="modal-close-btn" onClick={() => setSelectedService(null)}>
               Close
             </button>

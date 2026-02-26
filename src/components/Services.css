@@ -167,15 +167,19 @@
 
 /* ── Responsive ─────────────────────────────────────────────── */
 
-/* Tablet — 768px */
+/* Tablet / Mobile — 768px                                      */
+/* GSAP pin is disabled here → track becomes native scroll       */
 @media (max-width: 768px) {
   .services-section {
     height: auto;
     min-height: unset;
+    overflow: visible;
+    /* no clip that hides scroll thumb  */
   }
 
   .services-wrapper {
     height: auto;
+    overflow: visible;
   }
 
   .service-header {
@@ -192,15 +196,47 @@
     margin-bottom: 1.5rem;
   }
 
+  /* Native horizontal scroll — replaces the GSAP pin on mobile */
   .services-track {
     gap: 1.5rem;
-    padding: 2rem 6vw;
+    padding: 2rem 6vw 2.5rem;
+    padding-right: 10vw;
+    /* peek next card = swipe hint     */
+    overflow-x: auto;
+    overflow-y: visible;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    cursor: grab;
+  }
+
+  .services-track:active {
+    cursor: grabbing;
+  }
+
+  .services-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Swipe hint label */
+  .services-track::after {
+    content: '← swipe →';
+    flex-shrink: 0;
+    align-self: flex-end;
+    color: rgba(255, 255, 255, 0.18);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    padding: 0 0.5rem 0.25rem;
+    white-space: nowrap;
   }
 
   .service-card {
     flex: 0 0 280px;
     padding: 1.8rem 1.4rem;
     border-radius: 14px;
+    scroll-snap-align: start;
+    /* snap each card on mobile swipe */
   }
 
   .service-icon {
@@ -257,15 +293,17 @@
   }
 
   .services-track {
-    gap: 1.25rem;
+    gap: 1rem;
     padding: 1.5rem 5vw;
+    padding-right: 12vw;
+    /* peek next card */
   }
 
   .service-card {
-    flex: 0 0 84vw;
-    /* near full-width on small phones */
+    flex: 0 0 82vw;
     padding: 1.5rem 1.25rem;
     border-radius: 12px;
+    scroll-snap-align: start;
   }
 
   .service-card:hover {

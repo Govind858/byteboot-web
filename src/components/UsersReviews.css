@@ -408,6 +408,7 @@
     padding: 52px 0 44px;
   }
 
+  /* Stack header vertically */
   .review-header {
     flex-direction: column;
     align-items: flex-start;
@@ -416,15 +417,32 @@
     padding: 0 20px;
   }
 
+  .review-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+
+  .review-title {
+    font-size: clamp(22px, 6vw, 30px);
+  }
+
+  .review-subtitle {
+    font-size: 13px;
+  }
+
+  /* Rating summary: goes horizontal when stacked below heading */
   .rating-summary {
-    align-items: flex-start;
     flex-direction: row;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
   }
 
   .rating-big {
     font-size: 34px;
+  }
+
+  .rating-big span {
+    font-size: 15px;
   }
 
   .review-footer {
@@ -435,18 +453,37 @@
 
 @media (max-width: 480px) {
   .review-section {
-    padding: 40px 0 32px;
+    padding: 36px 0 28px;
   }
 
   .review-header {
     padding: 0 16px;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
+    gap: 16px;
   }
 
   .review-title {
-    font-size: clamp(20px, 6.5vw, 28px);
+    font-size: clamp(19px, 7vw, 24px);
   }
 
+  .review-subtitle {
+    font-size: 12px;
+  }
+
+  /* Rating: tight row, smaller number */
+  .rating-summary {
+    gap: 10px;
+  }
+
+  .rating-big {
+    font-size: 28px;
+  }
+
+  .rating-count {
+    font-size: 11px;
+  }
+
+  /* Cards */
   .rv-card {
     flex: 0 0 220px;
     padding: 14px;
@@ -461,8 +498,15 @@
     font-size: 12px;
   }
 
+  /* CTA button full width on tiny screens */
   .view-all-btn {
+    width: 100%;
+    justify-content: center;
     font-size: 13px;
-    padding: 9px 20px;
+    padding: 10px 20px;
+  }
+
+  .review-footer {
+    padding: 0 16px;
   }
 }
