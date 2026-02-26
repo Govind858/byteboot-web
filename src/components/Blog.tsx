@@ -19,16 +19,31 @@ const Blog: React.FC = () => {
     return (
         <section id="blog" className="blog-section">
             <div className="container">
-                <motion.h2
-                    className="blog-heading"
-                    initial={{ opacity: 0, scale: 0.92 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, ease: 'easeOut' as const }}
-                    viewport={{ once: true, amount: 0.5 }}
-                >
-                    Latest Insights
-                </motion.h2>
-                <div className="blog-heading-underline" />
+                <div className="blog-header">
+                    <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        viewport={{ once: true, amount: 0.5 }}
+                    >
+                        <p className="blog-eyebrow">Stay Updated</p>
+                        <h2 className="blog-heading">
+                            Latest <span>Insights</span>
+                        </h2>
+                        <p className="blog-subtitle">Fresh perspectives on technology and innovation.</p>
+                    </motion.div>
+
+                    <motion.div
+                        className="blog-summary"
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        viewport={{ once: true, amount: 0.5 }}
+                    >
+                        <div className="summary-big">03</div>
+                        <p className="summary-label">Featured Posts</p>
+                    </motion.div>
+                </div>
 
                 <motion.div
                     className="blog-grid"

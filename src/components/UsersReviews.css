@@ -58,8 +58,8 @@
 /* ─── HEADER ───────────────────────────────────────────────── */
 .review-header {
   max-width: 1200px;
-  margin: 0 auto 44px;
-  padding: 0 24px;
+  margin: 0 auto 5.5rem;
+  padding: 2rem 2rem 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -160,9 +160,12 @@
 .marquee-row {
   display: flex;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   overflow: hidden;
   mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  padding: 0 2rem;
 }
 
 .marquee-inner {
@@ -362,7 +365,7 @@
 .review-footer {
   max-width: 1200px;
   margin: 36px auto 0;
-  padding: 0 24px;
+  padding: 0 2rem;
   display: flex;
   justify-content: flex-end;
   position: relative;
@@ -413,8 +416,8 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
-    margin-bottom: 32px;
-    padding: 0 20px;
+    margin-bottom: 4rem;
+    padding: 2rem 2rem 0;
   }
 
   .review-eyebrow {
@@ -447,7 +450,7 @@
 
   .review-footer {
     justify-content: center;
-    padding: 0 20px;
+    padding: 0 2rem;
   }
 }
 
@@ -457,7 +460,7 @@
   }
 
   .review-header {
-    padding: 0 16px;
+    padding: 0 2rem;
     margin-bottom: 22px;
     gap: 16px;
   }
@@ -507,6 +510,6 @@
   }
 
   .review-footer {
-    padding: 0 16px;
+    padding: 0 2rem;
   }
 }

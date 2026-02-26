@@ -3,19 +3,13 @@ import { FaGithub, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { Mail, ArrowUpRight, MapPin } from 'lucide-react';
 import Logo from "../assets/byteboot.png"
 
-const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Portfolio', href: '#portfolio' },
-  { label: 'Blog', href: '#blog' },
-  { label: 'Contact', href: '#contact' },
-];
+import { navLinks } from '../data/mockData';
 
 const socials = [
-  { icon: FaGithub, href: 'https://github.com', label: 'GitHub' },
+  { icon: FaGithub, href: 'https://github.com/byteboottech', label: 'GitHub' },
   { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
   { icon: FaLinkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-  { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
+  { icon: FaInstagram, href: 'https://www.instagram.com/byteboot_techno_solutions_/', label: 'Instagram' },
 ];
 
 const css = `

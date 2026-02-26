@@ -1,9 +1,9 @@
 // src/components/Portfolio.tsx
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { getProducts } from '../APIs/adminApi';
-import { useScrollReveal } from '../hooks/useScrollReveal';
 import './Portfolio.css';
 
 interface Project {
@@ -16,7 +16,6 @@ interface Project {
 }
 
 const Portfolio: React.FC = () => {
-  const titleRef = useScrollReveal<HTMLDivElement>({ delay: 0 });
   const trackRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -130,12 +129,31 @@ const Portfolio: React.FC = () => {
     <section id="portfolio" className="portfolio-section">
       <div className="portfolio-container">
 
-        {/* Header */}
-        <div ref={titleRef} className="portfolio-header">
-          <h2 className="portfolio-title">Our <span>Products</span></h2>
-          <p className="portfolio-subtitle">
-            A showcase of our finest work — built with precision, designed to perform.
-          </p>
+        {/* Header — two halves slide in from opposite sides */}
+        <div className="portfolio-header">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            viewport={{ once: true, amount: 0.5 }}
+          >
+            <p className="portfolio-eyebrow">Our Work</p>
+            <h2 className="portfolio-title">Our <span>Products</span></h2>
+            <p className="portfolio-subtitle">
+              A showcase of our finest work — built with precision, designed to perform.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="portfolio-summary"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            viewport={{ once: true, amount: 0.5 }}
+          >
+            <div className="summary-big">12+</div>
+            <p className="summary-label">Own Products</p>
+          </motion.div>
         </div>
 
         {/* Loading */}

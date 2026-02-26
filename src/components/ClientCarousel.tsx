@@ -49,39 +49,41 @@ const clients = [
 
 const ClientCarousel: React.FC = () => {
   return (
-    <div className="w-full bg-black/10 py-10 md:py-12 lg:py-14 overflow-hidden">
-      <div
-        className="overflow-hidden"
-        style={{
-          maskImage:
-            'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
-          WebkitMaskImage:
-            'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
-        }}
-      >
+    <div className="w-full bg-black/10 py-10 md:py-12 lg:py-14">
+      <div className="container overflow-hidden">
         <div
-          className="flex w-max animate-scroll gap-12 md:gap-16 lg:gap-20 items-center"
+          className="overflow-hidden"
+          style={{
+            maskImage:
+              'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+            WebkitMaskImage:
+              'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+          }}
         >
-          {/* Duplicate the list twice for seamless infinite scroll */}
-          {[...clients, ...clients].map((client, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center justify-center w-[100px] min-w-[100px] md:w-[120px] md:min-w-[120px] flex-shrink-0 group cursor-pointer"
-            >
-              <div className="h-12 w-full flex items-center justify-center mb-2 md:mb-3">
-                <img
-                  src={client.logo}
-                  alt={`${client.name} logo`}
-                  // Removed grayscale and opacity classes below
-                  className="h-8 md:h-9 w-auto max-w-[90px] md:max-w-[110px] object-contain transition-all duration-300 ease-out transform group-hover:scale-110"
-                  loading="lazy"
-                />
+          <div
+            className="flex w-max animate-scroll gap-12 md:gap-16 lg:gap-20 items-center"
+          >
+            {/* Duplicate the list twice for seamless infinite scroll */}
+            {[...clients, ...clients].map((client, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center justify-center w-[100px] min-w-[100px] md:w-[120px] md:min-w-[120px] flex-shrink-0 group cursor-pointer"
+              >
+                <div className="h-12 w-full flex items-center justify-center mb-2 md:mb-3">
+                  <img
+                    src={client.logo}
+                    alt={`${client.name} logo`}
+                    // Removed grayscale and opacity classes below
+                    className="h-8 md:h-9 w-auto max-w-[90px] md:max-w-[110px] object-contain transition-all duration-300 ease-out transform group-hover:scale-110"
+                    loading="lazy"
+                  />
+                </div>
+                <span className="text-gray-500 text-[10px] md:text-xs font-semibold uppercase tracking-wider group-hover:text-brand-accent transition-colors duration-300 whitespace-nowrap">
+                  {client.name}
+                </span>
               </div>
-              <span className="text-gray-500 text-[10px] md:text-xs font-semibold uppercase tracking-wider group-hover:text-brand-accent transition-colors duration-300 whitespace-nowrap">
-                {client.name}
-              </span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

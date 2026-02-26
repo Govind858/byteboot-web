@@ -62,36 +62,18 @@
 
 /* Container */
 .contact-container {
-    max-width: 80rem;
-    /* max-w-7xl */
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1.25rem;
+    padding: 0 2rem;
     position: relative;
     z-index: 10;
-}
-
-@media (min-width: 640px) {
-    .contact-container {
-        padding: 0 1.5rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .contact-container {
-        padding: 0 2rem;
-    }
 }
 
 /* Header */
 .contact-header {
     text-align: center;
-    margin-bottom: 4rem;
-}
-
-@media (min-width: 768px) {
-    .contact-header {
-        margin-bottom: 5rem;
-    }
+    margin-bottom: 5.5rem;
+    padding-top: 2rem;
 }
 
 .contact-title {
