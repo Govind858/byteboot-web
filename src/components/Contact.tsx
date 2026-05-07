@@ -1,21 +1,39 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
+import apiClient from '../APIs/Axios';
 import './Contact.css';
 
 const EASE_OUT = [0.25, 0.46, 0.45, 0.94] as const;
 
 const Contact: React.FC = () => {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [status, setStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: '' });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        alert(`Thank you, ${formData.name}! We'll get back to you soon.`);
-        setFormData({ name: '', email: '', message: '' });
+        setIsSubmitting(true);
+        setStatus({ type: null, message: '' });
+
+        try {
+            const response = await apiClient.post('/send-email', formData);
+            if (response.data.success) {
+                setStatus({ type: 'success', message: 'Thank you! Your message has been sent successfully.' });
+                setFormData({ name: '', email: '', message: '' });
+            } else {
+                setStatus({ type: 'error', message: 'Failed to send message. Please try again later.' });
+            }
+        } catch (error) {
+            console.error('Error sending email:', error);
+            setStatus({ type: 'error', message: 'Something went wrong. Please check your connection and try again.' });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -72,12 +90,34 @@ const Contact: React.FC = () => {
                             <motion.button
                                 type="submit"
                                 className="submit-btn group"
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.97 }}
+                                whileHover={{ scale: isSubmitting ? 1 : 1.03 }}
+                                whileTap={{ scale: isSubmitting ? 1 : 0.97 }}
+                                disabled={isSubmitting}
                             >
-                                <Send size={18} />
-                                Send Message
+                                {isSubmitting ? (
+                                    <>
+                                        <Loader2 size={18} className="animate-spin" />
+                                        Sending...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Send size={18} />
+                                        Send Message
+                                    </>
+                                )}
                             </motion.button>
+                            <AnimatePresence>
+                                {status.message && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        className={`status-message ${status.type}`}
+                                    >
+                                        {status.message}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </form>
                     </motion.div>
 
